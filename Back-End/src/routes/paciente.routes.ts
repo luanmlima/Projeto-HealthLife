@@ -18,7 +18,7 @@ pacienteRouter.post('/', async (request, response) => {
     });
     response.json(pacienteCriado);
   } catch (error) {
-    console.log(error);
+    response.json({ message: error.message });
   }
 });
 

@@ -1,9 +1,9 @@
 import { Pool } from 'pg';
 import Paciente from '../models/Paciente';
-import FabricadeConexao from './FabricadeConexao';
+import FabricadeConexao from '../utils/FabricadeConexao';
 
 class PacienteDAO {
-  public async cadastrar(paciente: Paciente): Promise<void> {
+  public async cadastrar(paciente: Paciente): Promise<Paciente | Error> {
     try {
       const conexao = new FabricadeConexao();
       conexao.conexao();
@@ -18,10 +18,13 @@ class PacienteDAO {
         paciente.getUsuario()?.getId(),
       ];
 
-      await pool.query(queryInsert, values);
+      const pacienteCriado = await pool.query(queryInsert, values);
+
       conexao.close();
+
+      return pacienteCriado.rows[0];
     } catch (err) {
-      console.log(err.stack);
+      return err;
     }
   }
 }
