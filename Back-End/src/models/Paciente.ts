@@ -23,6 +23,10 @@ class Paciente {
     return this.id;
   }
 
+  public setId(id: number) {
+    this.id = id;
+  }
+
   public setNome(nome: string) {
     this.nome = nome;
   }

@@ -12,6 +12,12 @@ interface PacienteDTO {
   idade: number;
 }
 
+interface PacienteSemUsuarioDTO {
+  nome: string;
+  idade: number;
+  id: number;
+}
+
 class PacienteController {
   public async cadastrar({ nome, cpf, login, senha, idade }: PacienteDTO) {
     try {
@@ -49,6 +55,48 @@ class PacienteController {
       const pacienteCriado = await pacienteDao.cadastrar(paciente);
 
       return pacienteCriado;
+    } catch (err) {
+      return err.message;
+    }
+  }
+
+  public async atualizar({ nome, id, idade }: PacienteSemUsuarioDTO) {
+    try {
+      const paciente = new Paciente();
+      const pacienteDao = new PacienteDAO();
+
+      paciente.setId(id);
+      paciente.setNome(nome);
+      paciente.setIdade(idade);
+
+      const pacienteCriado = await pacienteDao.atualizar(paciente);
+
+      return pacienteCriado;
+    } catch (err) {
+      return err.message;
+    }
+  }
+
+  public async deletar(id: number) {
+    try {
+      const paciente = new Paciente();
+      const usuario = new Usuario();
+      const pacienteDao = new PacienteDAO();
+      const usuarioDao = new UsuarioDAO();
+
+      paciente.setId(id);
+
+      const idUsuario = await pacienteDao.deletar(paciente);
+
+      if (idUsuario === 0) {
+        throw new Error('Paciente não encontrado');
+      }
+
+      usuario.setId(idUsuario);
+
+      await usuarioDao.deletar(usuario);
+
+      return { message: 'Paciente deletado com sucesso' };
     } catch (err) {
       return err.message;
     }

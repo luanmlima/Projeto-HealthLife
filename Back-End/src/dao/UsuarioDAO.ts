@@ -55,6 +55,28 @@ class UsuarioDAO {
       return err;
     }
   }
+
+  public async deletar(usuario: Usuario): Promise<boolean> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
+
+      const queryDeletarUsuario = {
+        name: 'Deletar Usuario',
+        text: 'DELETE FROM usuario WHERE codusuario = $1',
+        values: [usuario.getId()],
+      };
+
+      await pool.query(queryDeletarUsuario);
+
+      conexao.close();
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
 }
 
 export default UsuarioDAO;
