@@ -1,44 +1,50 @@
 class Usuario {
-  id: number | null;
-  login: string;
-  senha: string;
-  tipo: string;
+  private id: number | null;
 
-  constructor({ login, senha, tipo }: Omit<Usuario, 'id'>) {
+  private login: string | null;
+
+  private senha: string | null;
+
+  private tipo: string | null;
+
+  constructor() {
     this.id = null;
-    this.login = login;
-    this.senha = senha;
-    this.tipo = tipo;
+    this.login = null;
+    this.senha = null;
+    this.tipo = null;
   }
 
   public getId(): number | null {
-    return this.id
+    return this.id;
+  }
+
+  public setId(id: number) {
+    this.id = id;
   }
 
   public setLogin(login: string) {
     this.login = login;
   }
 
-  public getLogin(): string {
-    return this.login
+  public getLogin(): string | null {
+    return this.login;
   }
 
   public setSenha(senha: string) {
     this.senha = senha;
   }
 
-  public getSenha(): string {
-    return this.senha
+  public getSenha(): string | null {
+    return this.senha;
   }
 
   public setTipo(tipo: string) {
     this.tipo = tipo;
   }
 
-  public getTipo(): string {
-    return this.tipo
+  public getTipo(): string | null {
+    return this.tipo;
   }
-
 }
 
-export default Usuario
+export default Usuario;
