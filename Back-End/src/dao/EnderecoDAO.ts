@@ -18,28 +18,8 @@ class EnderecoDAO {
       conexao.conexao();
       const pool = new Pool();
 
-      const querySelect = {
-        name: 'Bucar-login',
-        text:
-          'SELECT * FROM usuario WHERE rua = $1 AND cidade = $2 AND bairro = $3 AND numero = $4 AND sala = $5',
-        values: [
-          endereco.getRua(),
-          endereco.getCidade(),
-          endereco.getBairro(),
-          endereco.getNumero(),
-          endereco.getSala(),
-        ],
-      };
-
-      const enderecoExiste = await pool.query(querySelect);
-
-      if (enderecoExiste.rows[0]) {
-        const enderecoExistente: EnderecoDTO = enderecoExiste.rows[0];
-        return enderecoExistente.codendereco;
-      }
-
       const queryInsert =
-        'INSERT INTO usuario(rua ,cidade, bairro, numero, sala) VALUES($1, $2, $3, $4, $5) RETURNING * ';
+        'INSERT INTO endereco(rua ,cidade, bairro, numero, sala) VALUES($1, $2, $3, $4, $5) RETURNING * ';
       const values = [
         endereco.getRua(),
         endereco.getCidade(),
