@@ -69,13 +69,13 @@ class PacienteDAO {
 
       const idUsuario: number = pacienteSelecionado.rows[0].usuario;
 
-      const queryDeletarPaciente = {
-        name: 'Deletar Paciente',
-        text: 'DELETE FROM paciente WHERE codpaciente = $1',
+      const queryAtualizarPaciente = {
+        name: 'Atualizar status paciente',
+        text: 'UPDATE paciente SET status = 0 WHERE codpaciente = $1',
         values: [paciente.getId()],
       };
 
-      await pool.query(queryDeletarPaciente);
+      await pool.query(queryAtualizarPaciente);
 
       conexao.close();
 

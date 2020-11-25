@@ -62,13 +62,13 @@ class UsuarioDAO {
       conexao.conexao();
       const pool = new Pool();
 
-      const queryDeletarUsuario = {
-        name: 'Deletar Usuario',
-        text: 'DELETE FROM usuario WHERE codusuario = $1',
+      const queryAtualizarUsuario = {
+        name: 'Atualizar status do Usuario',
+        text: 'UPDATE usuario SET status = 0 WHERE codusuario = $1',
         values: [usuario.getId()],
       };
 
-      await pool.query(queryDeletarUsuario);
+      await pool.query(queryAtualizarUsuario);
 
       conexao.close();
 

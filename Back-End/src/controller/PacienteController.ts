@@ -96,7 +96,7 @@ class PacienteController {
 
       await usuarioDao.deletar(usuario);
 
-      return { message: 'Paciente deletado com sucesso' };
+      return { message: 'Paciente desativado com sucesso' };
     } catch (err) {
       return err.message;
     }

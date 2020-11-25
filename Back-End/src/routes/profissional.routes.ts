@@ -79,20 +79,20 @@ profissionalRoute.put('/atualizar', async (request, response) => {
   }
 });
 
-// profissionalRoute.delete('/:id', async (request, response) => {
-//   try {
-//     const { id } = request.params;
+profissionalRoute.delete('/:id', async (request, response) => {
+  try {
+    const { id } = request.params;
 
-//     const pacienteController = new PacienteController();
+    const profissionalController = new ProfissionalController();
 
-//     const pacienteDeletadoMessage = await pacienteController.deletar(
-//       Number(id),
-//     );
-//     response.status(201).json(pacienteDeletadoMessage);
-//   } catch (error) {
-//     response.status(404).json({ message: error.message });
-//   }
-// });
+    const profissionalDeletadoMessage = await profissionalController.deletar(
+      Number(id),
+    );
+    response.status(201).json(profissionalDeletadoMessage);
+  } catch (error) {
+    response.status(404).json({ message: error.message });
+  }
+});
 
 // profissionalRoute.post('/', async (request, response) => {
 //   try {

@@ -167,30 +167,30 @@ class ProfissionalController {
     }
   }
 
-  // public async deletar(id: number) {
-  //   try {
-  //     const paciente = new Profissional();
-  //     const usuario = new Usuario();
-  //     const pacienteDao = new ProfissionalDAO();
-  //     const usuarioDao = new UsuarioDAO();
+  public async deletar(id: number) {
+    try {
+      const profissional = new Profissional();
+      const usuario = new Usuario();
+      const profissionalDao = new ProfissionalDAO();
+      const usuarioDao = new UsuarioDAO();
 
-  //     paciente.setId(id);
+      profissional.setId(id);
 
-  //     const idUsuario = await pacienteDao.deletar(paciente);
+      const idUsuario = await profissionalDao.deletar(profissional);
 
-  //     if (idUsuario === 0) {
-  //       throw new Error('Paciente não encontrado');
-  //     }
+      if (idUsuario === 0) {
+        throw new Error('Profissional não encontrado');
+      }
 
-  //     usuario.setId(idUsuario);
+      usuario.setId(idUsuario);
 
-  //     await usuarioDao.deletar(usuario);
+      await usuarioDao.deletar(usuario);
 
-  //     return { message: 'Paciente deletado com sucesso' };
-  //   } catch (err) {
-  //     return err.message;
-  //   }
-  // }
+      return { message: 'Profissional desativado com sucesso' };
+    } catch (err) {
+      return err.message;
+    }
+  }
 
   // public async logar(login: string, senha: string) {
   //   try {

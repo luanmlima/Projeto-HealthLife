@@ -85,39 +85,36 @@ class ProfissionalDAO {
     }
   }
 
-  // public async deletar(paciente: Paciente): Promise<number> {
-  //   try {
-  //     const conexao = new FabricadeConexao();
-  //     conexao.conexao();
-  //     const pool = new Pool();
+  public async deletar(profissional: Profissional): Promise<number> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
 
-  //     const querySelectPaciente = {
-  //       name: 'Selecionar Paciente',
-  //       text: 'SELECT usuario from paciente WHERE codpaciente = $1',
-  //       values: [paciente.getId()],
-  //     };
+      const querySelectProfissional = {
+        name: 'Selecionar Profissional',
+        text: 'SELECT usuario from profissional WHERE codprofissional = $1',
+        values: [profissional.getId()],
+      };
 
-  //     const pacienteSelecionado = await pool.query(querySelectPaciente);
+      const pacienteSelecionado = await pool.query(querySelectProfissional);
 
-  //     const idUsuario: number = pacienteSelecionado.rows[0].usuario;
+      const idUsuario: number = pacienteSelecionado.rows[0].usuario;
 
-  //     const queryDeletarPaciente = {
-  //       name: 'Deletar Paciente',
-  //       text: 'DELETE FROM paciente WHERE codpaciente = $1',
-  //       values: [paciente.getId()],
-  //     };
+      const queryAtualizarrofissional = {
+        name: 'Atualizar status profissional',
+        text: 'UPDATE profissional SET status = 0 WHERE codprofissional = $1',
+        values: [profissional.getId()],
+      };
+      await pool.query(queryAtualizarrofissional);
+      conexao.close();
+      return idUsuario;
+    } catch (err) {
+      return 0;
+    }
+  }
 
-  //     await pool.query(queryDeletarPaciente);
-
-  //     conexao.close();
-
-  //     return idUsuario;
-  //   } catch (err) {
-  //     return 0;
-  //   }
-  // }
-
-  // public async login(paciente: Paciente): Promise<Paciente> {
+  // public async login(profissional: Paciente): Promise<Paciente> {
   //   try {
   //     const conexao = new FabricadeConexao();
   //     conexao.conexao();
