@@ -11,12 +11,15 @@ class Paciente {
 
   private usuario: Usuario | null;
 
+  private status: number | null;
+
   constructor() {
     this.id = null;
     this.nome = null;
     this.cpf = null;
     this.idade = null;
     this.usuario = null;
+    this.status = null;
   }
 
   public getId(): number | null {
@@ -57,6 +60,14 @@ class Paciente {
 
   public getUsuario(): Usuario | null {
     return this.usuario;
+  }
+
+  public setStatus(status: number) {
+    this.status = status;
+  }
+
+  public getStatus(): number | null {
+    return this.status;
   }
 }
 

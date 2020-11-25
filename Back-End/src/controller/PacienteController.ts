@@ -132,9 +132,7 @@ class PacienteController {
   public async listar(id: number) {
     try {
       const paciente = new Paciente();
-      const usuario = new Usuario();
       const pacienteDao = new PacienteDAO();
-      const usuarioDao = new UsuarioDAO();
 
       paciente.setId(id);
 

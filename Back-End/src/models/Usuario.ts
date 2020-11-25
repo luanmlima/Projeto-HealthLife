@@ -7,11 +7,14 @@ class Usuario {
 
   private tipo: string | null;
 
+  private status: number | null;
+
   constructor() {
     this.id = null;
     this.login = null;
     this.senha = null;
     this.tipo = null;
+    this.status = null;
   }
 
   public getId(): number | null {
@@ -44,6 +47,14 @@ class Usuario {
 
   public getTipo(): string | null {
     return this.tipo;
+  }
+
+  public setStatus(status: number) {
+    this.status = status;
+  }
+
+  public getStatus(): number | null {
+    return this.status;
   }
 }
 
