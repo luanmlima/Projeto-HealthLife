@@ -7,15 +7,15 @@ class BuscarPorCPFDAO {
     conexao.conexao();
     const pool = new Pool();
 
-    const querySelectPaciente = {
+    const querySelectUsuario = {
       name: 'Bucar-login',
-      text: `SELECT * FROM ${tabela} WHERE cpf = $1`,
+      text: `SELECT * FROM ${tabela} WHERE cpf = $1 AND status = 0`,
       values: [cpf],
     };
 
-    const pacienteExiste = await pool.query(querySelectPaciente);
+    const usuarioExiste = await pool.query(querySelectUsuario);
 
-    if (pacienteExiste.rows[0]) {
+    if (usuarioExiste.rows[0]) {
       return true;
     }
 
