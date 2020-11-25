@@ -2,6 +2,14 @@ import { Pool } from 'pg';
 import Paciente from '../models/Paciente';
 import FabricadeConexao from '../utils/FabricadeConexao';
 
+interface PacienteDBDTO {
+  codpaciente: number;
+  nome: string;
+  cpf: string;
+  idade: number;
+  status: number;
+}
+
 class PacienteDAO {
   public async cadastrar(paciente: Paciente): Promise<Paciente | Error> {
     try {
@@ -109,7 +117,7 @@ class PacienteDAO {
     }
   }
 
-  public async listar(paciente: Paciente): Promise<Paciente> {
+  public async listar(paciente: Paciente): Promise<PacienteDBDTO> {
     try {
       const conexao = new FabricadeConexao();
       conexao.conexao();
@@ -123,7 +131,11 @@ class PacienteDAO {
 
       const queryPacienteLogado = await pool.query(queryPacienteLogin);
 
-      const pacienteLogado: Paciente = queryPacienteLogado.rows[0];
+      const pacienteLogado: PacienteDBDTO = queryPacienteLogado.rows[0];
+
+      if (pacienteLogado.status === 0) {
+        throw new Error();
+      }
 
       conexao.close();
 

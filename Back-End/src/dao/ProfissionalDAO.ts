@@ -12,6 +12,7 @@ interface ProfissionalDBDTO {
   cpf: string;
   numeroDiploma: number;
   numeroCarteira: number;
+  status: number;
 }
 
 class ProfissionalDAO {
@@ -97,9 +98,9 @@ class ProfissionalDAO {
         values: [profissional.getId()],
       };
 
-      const pacienteSelecionado = await pool.query(querySelectProfissional);
+      const profissionalSelecionado = await pool.query(querySelectProfissional);
 
-      const idUsuario: number = pacienteSelecionado.rows[0].usuario;
+      const idUsuario: number = profissionalSelecionado.rows[0].usuario;
 
       const queryAtualizarrofissional = {
         name: 'Atualizar status profissional',
@@ -139,29 +140,36 @@ class ProfissionalDAO {
     }
   }
 
-  // public async listar(paciente: Paciente): Promise<Paciente> {
-  //   try {
-  //     const conexao = new FabricadeConexao();
-  //     conexao.conexao();
-  //     const pool = new Pool();
+  public async listar(profissional: Profissional): Promise<ProfissionalDBDTO> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
 
-  //     const queryPacienteLogin = {
-  //       name: 'Selecionar Usuario',
-  //       text: 'SELECT * FROM paciente WHERE codpaciente = $1',
-  //       values: [paciente.getId()],
-  //     };
+      const querySelecionarProfissional = {
+        name: 'Selecionar Usuario',
+        text: 'SELECT * FROM profissional WHERE codprofissional = $1',
+        values: [profissional.getId()],
+      };
 
-  //     const queryPacienteLogado = await pool.query(queryPacienteLogin);
+      const queryprofissionalListado = await pool.query(
+        querySelecionarProfissional,
+      );
 
-  //     const pacienteLogado: Paciente = queryPacienteLogado.rows[0];
+      const profissionalListado: ProfissionalDBDTO =
+        queryprofissionalListado.rows[0];
 
-  //     conexao.close();
+      if (profissionalListado.status === 0) {
+        throw new Error();
+      }
 
-  //     return pacienteLogado;
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // }
+      conexao.close();
+
+      return profissionalListado;
+    } catch (err) {
+      return err;
+    }
+  }
 }
 
 export default ProfissionalDAO;

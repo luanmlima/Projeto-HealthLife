@@ -107,17 +107,17 @@ profissionalRoute.post('/', async (request, response) => {
   }
 });
 
-// profissionalRoute.get('/:id', async (request, response) => {
-//   try {
-//     const { id } = request.params;
+profissionalRoute.get('/:id', async (request, response) => {
+  try {
+    const { id } = request.params;
 
-//     const profissionalController = new PacienteController();
+    const profissionalController = new ProfissionalController();
 
-//     const paciente = await pacienteController.listar(Number(id));
-//     response.status(200).json(paciente);
-//   } catch (error) {
-//     response.status(404).json({ message: error.message });
-//   }
-// });
+    const profissional = await profissionalController.listar(Number(id));
+    response.status(200).json(profissional);
+  } catch (error) {
+    response.status(404).json({ message: error.message });
+  }
+});
 
 export default profissionalRoute;

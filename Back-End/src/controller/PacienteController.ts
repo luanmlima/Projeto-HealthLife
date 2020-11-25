@@ -137,6 +137,9 @@ class PacienteController {
       paciente.setId(id);
 
       const pacienteListado = await pacienteDao.listar(paciente);
+      if (pacienteListado instanceof Error) {
+        throw new Error('Usuario desativado ou não existe');
+      }
 
       return pacienteListado;
     } catch (err) {

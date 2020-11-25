@@ -48,6 +48,26 @@ interface ProfissionalDBDTO {
   numeroCarteira: number;
 }
 
+interface EnderecoDBDTO {
+  codendereco: number;
+  rua: string;
+  cidade: string;
+  bairro: string;
+  numero: number;
+  sala: number;
+}
+
+interface ProfissionalEnderecoDTO {
+  codprofissional: number;
+  especialidade: string;
+  anosExperiencia: number;
+  nome: string;
+  endereco: EnderecoDBDTO;
+  cpf: string;
+  numeroDiploma: number;
+  numeroCarteira: number;
+}
+
 class ProfissionalController {
   public async cadastrar({
     especialidade,
@@ -219,20 +239,44 @@ class ProfissionalController {
     }
   }
 
-  // public async listar(id: number) {
-  //   try {
-  //     const paciente = new Profissional();
-  //     const pacienteDao = new ProfissionalDAO();
+  public async listar(id: number) {
+    try {
+      const profissional = new Profissional();
+      const profissionalDao = new ProfissionalDAO();
+      const endereco = new Endereco();
+      const enderecoDao = new EnderecoDAO();
 
-  //     paciente.setId(id);
+      profissional.setId(id);
 
-  //     const pacienteListado = await pacienteDao.listar(paciente);
+      const profissionalListado: ProfissionalDBDTO = await profissionalDao.listar(
+        profissional,
+      );
+      if (profissionalListado instanceof Error) {
+        throw new Error('Usuario desativado ou não existe');
+      }
 
-  //     return pacienteListado;
-  //   } catch (err) {
-  //     return err.message;
-  //   }
-  // }
+      endereco.setId(profissionalListado.codendereco);
+
+      const enderecoProfissionalListado: EnderecoDBDTO = await enderecoDao.listar(
+        endereco,
+      );
+
+      const profissionalEndereco: ProfissionalEnderecoDTO = {
+        codprofissional: profissionalListado.codprofissional,
+        nome: profissionalListado.nome,
+        cpf: profissionalListado.cpf,
+        especialidade: profissionalListado.especialidade,
+        anosExperiencia: profissionalListado.anosExperiencia,
+        numeroCarteira: profissionalListado.numeroCarteira,
+        numeroDiploma: profissionalListado.numeroDiploma,
+        endereco: enderecoProfissionalListado,
+      };
+
+      return profissionalEndereco;
+    } catch (err) {
+      return err.message;
+    }
+  }
 }
 
 export default ProfissionalController;

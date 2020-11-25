@@ -67,63 +67,29 @@ class EnderecoDAO {
     }
   }
 
-  // public async deletar(usuario: Usuario): Promise<boolean> {
-  //   try {
-  //     const conexao = new FabricadeConexao();
-  //     conexao.conexao();
-  //     const pool = new Pool();
+  public async listar(endereco: Endereco): Promise<EnderecoDTO> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
 
-  //     const queryDeletarUsuario = {
-  //       name: 'Deletar Usuario',
-  //       text: 'DELETE FROM usuario WHERE codusuario = $1',
-  //       values: [usuario.getId()],
-  //     };
+      const querySelecionarEndereco = {
+        name: 'Selecionar Usuario',
+        text: 'SELECT * FROM endereco WHERE codendereco = $1',
+        values: [endereco.getId()],
+      };
 
-  //     await pool.query(queryDeletarUsuario);
+      const queryEnderecoListado = await pool.query(querySelecionarEndereco);
 
-  //     conexao.close();
+      const enderecoDB: EnderecoDTO = queryEnderecoListado.rows[0];
 
-  //     return true;
-  //   } catch (err) {
-  //     return false;
-  //   }
-  // }
+      conexao.close();
 
-  // public async login(usuario: Usuario): Promise<number> {
-  //   try {
-  //     const conexao = new FabricadeConexao();
-  //     conexao.conexao();
-  //     const pool = new Pool();
-
-  //     const queryUsuarioLogin = {
-  //       name: 'Selecionar Usuario',
-  //       text: 'SELECT * FROM usuario WHERE login = $1',
-  //       values: [usuario.getLogin()],
-  //     };
-
-  //     const queryUsuarioLogado = await pool.query(queryUsuarioLogin);
-
-  //     if (!queryUsuarioLogado.rows[0]) {
-  //       throw new Error();
-  //     }
-
-  //     const usuarioLogado: UsuarioDTO = queryUsuarioLogado.rows[0];
-
-  //     const senhaLogin = String(usuario.getSenha());
-
-  //     const senhaCorreta = await compare(senhaLogin, usuarioLogado.senha);
-
-  //     conexao.close();
-
-  //     if (!senhaCorreta) {
-  //       throw new Error();
-  //     }
-
-  //     return usuarioLogado.codusuario;
-  //   } catch (err) {
-  //     return 0;
-  //   }
-  // }
+      return enderecoDB;
+    } catch (err) {
+      return err;
+    }
+  }
 }
 
 export default EnderecoDAO;
