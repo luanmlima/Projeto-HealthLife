@@ -3,7 +3,7 @@ import PacienteController from '../controller/PacienteController';
 
 const pacienteRouter = express.Router();
 
-pacienteRouter.post('/', async (request, response) => {
+pacienteRouter.post('/criar', async (request, response) => {
   try {
     const { login, senha, nome, cpf, idade } = request.body;
 
@@ -22,7 +22,7 @@ pacienteRouter.post('/', async (request, response) => {
   }
 });
 
-pacienteRouter.put('/', async (request, response) => {
+pacienteRouter.put('/atualizar', async (request, response) => {
   try {
     const { nome, id, idade } = request.body;
 
@@ -49,6 +49,32 @@ pacienteRouter.delete('/:id', async (request, response) => {
       Number(id),
     );
     response.status(201).json(pacienteDeletadoMessage);
+  } catch (error) {
+    response.status(404).json({ message: error.message });
+  }
+});
+
+pacienteRouter.post('/', async (request, response) => {
+  try {
+    const { login, senha } = request.body;
+
+    const pacienteController = new PacienteController();
+
+    const pacienteLogado = await pacienteController.logar(login, senha);
+    response.status(200).json(pacienteLogado);
+  } catch (error) {
+    response.status(404).json({ message: error.message });
+  }
+});
+
+pacienteRouter.get('/:id', async (request, response) => {
+  try {
+    const { id } = request.params;
+
+    const pacienteController = new PacienteController();
+
+    const paciente = await pacienteController.listar(Number(id));
+    response.status(200).json(paciente);
   } catch (error) {
     response.status(404).json({ message: error.message });
   }

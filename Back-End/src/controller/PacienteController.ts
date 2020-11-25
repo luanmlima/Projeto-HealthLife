@@ -101,6 +101,50 @@ class PacienteController {
       return err.message;
     }
   }
+
+  public async logar(login: string, senha: string) {
+    try {
+      const paciente = new Paciente();
+      const usuario = new Usuario();
+      const pacienteDao = new PacienteDAO();
+      const usuarioDao = new UsuarioDAO();
+
+      usuario.setLogin(login);
+      usuario.setSenha(senha);
+
+      const usuarioLogado = await usuarioDao.login(usuario);
+      if (usuarioLogado === 0) {
+        throw new Error('Login ou senha incorreta');
+      }
+
+      usuario.setId(usuarioLogado);
+
+      paciente.setUsuario(usuario);
+
+      const pacienteLogado = await pacienteDao.login(paciente);
+
+      return pacienteLogado;
+    } catch (err) {
+      return err.message;
+    }
+  }
+
+  public async listar(id: number) {
+    try {
+      const paciente = new Paciente();
+      const usuario = new Usuario();
+      const pacienteDao = new PacienteDAO();
+      const usuarioDao = new UsuarioDAO();
+
+      paciente.setId(id);
+
+      const pacienteListado = await pacienteDao.listar(paciente);
+
+      return pacienteListado;
+    } catch (err) {
+      return err.message;
+    }
+  }
 }
 
 export default PacienteController;

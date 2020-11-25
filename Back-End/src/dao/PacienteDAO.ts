@@ -84,6 +84,54 @@ class PacienteDAO {
       return 0;
     }
   }
+
+  public async login(paciente: Paciente): Promise<Paciente> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
+
+      const queryPacienteLogin = {
+        name: 'Selecionar Usuario',
+        text: 'SELECT * FROM paciente WHERE usuario = $1',
+        values: [paciente.getUsuario()?.getId()],
+      };
+
+      const queryPacienteLogado = await pool.query(queryPacienteLogin);
+
+      const pacienteLogado: Paciente = queryPacienteLogado.rows[0];
+
+      conexao.close();
+
+      return pacienteLogado;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  public async listar(paciente: Paciente): Promise<Paciente> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
+
+      const queryPacienteLogin = {
+        name: 'Selecionar Usuario',
+        text: 'SELECT * FROM paciente WHERE codpaciente = $1',
+        values: [paciente.getId()],
+      };
+
+      const queryPacienteLogado = await pool.query(queryPacienteLogin);
+
+      const pacienteLogado: Paciente = queryPacienteLogado.rows[0];
+
+      conexao.close();
+
+      return pacienteLogado;
+    } catch (err) {
+      return err;
+    }
+  }
 }
 
 export default PacienteDAO;
