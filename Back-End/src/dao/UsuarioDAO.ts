@@ -20,7 +20,7 @@ class UsuarioDAO {
 
       const querySelect = {
         name: 'Bucar-login',
-        text: 'SELECT * FROM usuario WHERE login = $1',
+        text: 'SELECT * FROM usuario WHERE login = $1 AND status = 1',
         values: [usuario.getLogin()],
       };
 
@@ -52,6 +52,41 @@ class UsuarioDAO {
       conexao.close();
 
       return result.codusuario;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  public async atualizar(
+    usuario: Usuario,
+    cpf: string,
+    tabela: string,
+  ): Promise<void> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
+
+      const querySelectUsuario = {
+        name: 'Bucar usuario',
+        text: `SELECT * FROM ${tabela} WHERE cpf = $1`,
+        values: [cpf],
+      };
+
+      const usuarioParaAtualizar = await pool.query(querySelectUsuario);
+
+      const queryUpdadte = {
+        name: 'Atualizar usuario',
+        text:
+          'UPDATE usuario SET login = $1, senha = $2, status = $3 WHERE codusuario = $4',
+        values: [
+          usuario.getLogin(),
+          usuario.getSenha(),
+          1,
+          usuarioParaAtualizar.rows[0].usuario,
+        ],
+      };
+      await pool.query(queryUpdadte);
     } catch (err) {
       return err;
     }

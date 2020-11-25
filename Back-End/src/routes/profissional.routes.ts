@@ -120,4 +120,14 @@ profissionalRoute.get('/:id', async (request, response) => {
   }
 });
 
+profissionalRoute.get('/', async (request, response) => {
+  try {
+    const profissionalController = new ProfissionalController();
+    const profissionais = await profissionalController.listarTodos();
+    response.status(200).json(profissionais);
+  } catch (error) {
+    response.status(404).json({ message: error.message });
+  }
+});
+
 export default profissionalRoute;

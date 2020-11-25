@@ -60,7 +60,7 @@ class ProfissionalDAO {
       const queryUpdate = {
         name: 'Atualizar Profissional',
         text:
-          'UPDATE profissional SET experiencia = $1, nome = $2, numero_diploma = $3, numero_carteira = $4 WHERE codprofissional = $5 RETURNING *',
+          'UPDATE profissional SET experiencia = $1, nome = $2, numero_diploma = $3, numero_carteira = $4, status = 1 WHERE codprofissional = $5 RETURNING *',
         values: [
           profissional.getAnosExperiencia(),
           profissional.getNome(),
@@ -166,6 +166,30 @@ class ProfissionalDAO {
       conexao.close();
 
       return profissionalListado;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  public async listarTodos(): Promise<ProfissionalDBDTO[]> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
+
+      const querySelecionarProfissional = {
+        name: 'Selecionar Profissionais',
+        text: 'SELECT * FROM profissional WHERE status = 1',
+      };
+
+      const queryprofissionalListado = await pool.query(
+        querySelecionarProfissional,
+      );
+      const listaProfissionais = queryprofissionalListado.rows;
+
+      conexao.close();
+
+      return listaProfissionais;
     } catch (err) {
       return err;
     }

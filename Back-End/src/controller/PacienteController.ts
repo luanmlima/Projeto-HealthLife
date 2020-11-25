@@ -11,11 +11,20 @@ interface PacienteDTO {
   senha: string;
   idade: number;
 }
-
+interface PacienteDBDTO {
+  codpaciente: number;
+  nome: string;
+  cpf: string;
+  idade: number;
+  status: number;
+}
 interface PacienteSemUsuarioDTO {
   nome: string;
   idade: number;
   id: number;
+}
+interface MessageRetorno {
+  message: string;
 }
 
 class PacienteController {
@@ -29,8 +38,19 @@ class PacienteController {
 
       const pacienteExiste = await buscaCPF.getCPF(cpf, 'paciente');
 
-      if (pacienteExiste) {
+      if (pacienteExiste === true) {
         throw new Error('Paciente já cadastrado');
+      }
+      if (pacienteExiste !== false) {
+        const pacienteAtualizado = await this.atualizar({
+          id: pacienteExiste,
+          nome,
+          idade,
+        });
+        usuario.setLogin(login);
+        usuario.setSenha(senha);
+        usuarioDao.atualizar(usuario, cpf, 'paciente');
+        return pacienteAtualizado;
       }
 
       usuario.setLogin(login);
@@ -77,7 +97,7 @@ class PacienteController {
     }
   }
 
-  public async deletar(id: number) {
+  public async deletar(id: number): Promise<MessageRetorno> {
     try {
       const paciente = new Paciente();
       const usuario = new Usuario();
@@ -102,7 +122,7 @@ class PacienteController {
     }
   }
 
-  public async logar(login: string, senha: string) {
+  public async logar(login: string, senha: string): Promise<Paciente> {
     try {
       const paciente = new Paciente();
       const usuario = new Usuario();
@@ -129,7 +149,7 @@ class PacienteController {
     }
   }
 
-  public async listar(id: number) {
+  public async listar(id: number): Promise<PacienteDBDTO> {
     try {
       const paciente = new Paciente();
       const pacienteDao = new PacienteDAO();

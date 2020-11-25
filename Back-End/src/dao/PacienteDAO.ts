@@ -47,7 +47,7 @@ class PacienteDAO {
       const queryUpdate = {
         name: 'Atualizar Paciente',
         text:
-          'UPDATE paciente SET nome = $1, idade = $2 WHERE codpaciente = $3 RETURNING *',
+          'UPDATE paciente SET nome = $1, idade = $2, status = 1 WHERE codpaciente = $3 RETURNING *',
         values: [paciente.getNome(), paciente.getIdade(), paciente.getId()],
       };
 

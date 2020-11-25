@@ -67,6 +67,9 @@ interface ProfissionalEnderecoDTO {
   numeroDiploma: number;
   numeroCarteira: number;
 }
+interface MessageRetorno {
+  message: string;
+}
 
 class ProfissionalController {
   public async cadastrar({
@@ -83,7 +86,7 @@ class ProfissionalController {
     bairro,
     numero,
     sala,
-  }: ProfissionalDTO) {
+  }: ProfissionalDTO): Promise<Profissional | ProfissionalDBDTO | Error> {
     try {
       const profissional = new Profissional();
       const usuario = new Usuario();
@@ -94,9 +97,26 @@ class ProfissionalController {
       const buscaCPF = new BuscaPorCPFDAO();
 
       const profissionalExiste = await buscaCPF.getCPF(cpf, 'profissional');
-
-      if (profissionalExiste) {
+      if (profissionalExiste === true) {
         throw new Error('Profissional já cadastrado');
+      }
+      if (profissionalExiste !== false) {
+        const profissionalAtualizado = await this.atualizar({
+          id: profissionalExiste,
+          anosExperiencia,
+          nome,
+          numeroDiploma,
+          numeroCarteira,
+          rua,
+          cidade,
+          bairro,
+          numero,
+          sala,
+        });
+        usuario.setLogin(login);
+        usuario.setSenha(senha);
+        usuarioDao.atualizar(usuario, cpf, 'profissional');
+        return profissionalAtualizado;
       }
 
       usuario.setLogin(login);
@@ -151,7 +171,7 @@ class ProfissionalController {
     bairro,
     numero,
     sala,
-  }: PacienteSemUsuarioDTO) {
+  }: PacienteSemUsuarioDTO): Promise<ProfissionalDBDTO | Error> {
     try {
       const profissional = new Profissional();
       const profissionalDao = new ProfissionalDAO();
@@ -187,7 +207,7 @@ class ProfissionalController {
     }
   }
 
-  public async deletar(id: number) {
+  public async deletar(id: number): Promise<MessageRetorno> {
     try {
       const profissional = new Profissional();
       const usuario = new Usuario();
@@ -212,7 +232,7 @@ class ProfissionalController {
     }
   }
 
-  public async logar(login: string, senha: string) {
+  public async logar(login: string, senha: string): Promise<ProfissionalDBDTO> {
     try {
       const profissional = new Profissional();
       const usuario = new Usuario();
@@ -239,7 +259,7 @@ class ProfissionalController {
     }
   }
 
-  public async listar(id: number) {
+  public async listar(id: number): Promise<ProfissionalEnderecoDTO> {
     try {
       const profissional = new Profissional();
       const profissionalDao = new ProfissionalDAO();
@@ -273,6 +293,18 @@ class ProfissionalController {
       };
 
       return profissionalEndereco;
+    } catch (err) {
+      return err.message;
+    }
+  }
+
+  public async listarTodos() {
+    try {
+      const profissionalDao = new ProfissionalDAO();
+
+      const profissionaisListados: ProfissionalDBDTO[] = await profissionalDao.listarTodos();
+
+      return profissionaisListados;
     } catch (err) {
       return err.message;
     }
