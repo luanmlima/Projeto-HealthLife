@@ -2,6 +2,18 @@ import { Pool } from 'pg';
 import Profissional from '../models/Profissional';
 import FabricadeConexao from '../utils/FabricadeConexao';
 
+interface ProfissionalDBDTO {
+  codprofissional: number;
+  especialidade: string;
+  anosExperiencia: number;
+  nome: string;
+  codendereco: number;
+  usuario: number;
+  cpf: string;
+  numeroDiploma: number;
+  numeroCarteira: number;
+}
+
 class ProfissionalDAO {
   public async cadastrar(
     profissional: Profissional,
@@ -36,28 +48,42 @@ class ProfissionalDAO {
     }
   }
 
-  // public async atualizar(paciente: Paciente): Promise<Paciente | Error> {
-  //   try {
-  //     const conexao = new FabricadeConexao();
-  //     conexao.conexao();
-  //     const pool = new Pool();
+  public async atualizar(
+    profissional: Profissional,
+  ): Promise<ProfissionalDBDTO | Error> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
 
-  //     const queryUpdate = {
-  //       name: 'Atualizar Paciente',
-  //       text:
-  //         'UPDATE paciente SET nome = $1, idade = $2 WHERE codpaciente = $3 RETURNING *',
-  //       values: [paciente.getNome(), paciente.getIdade(), paciente.getId()],
-  //     };
+      const queryUpdate = {
+        name: 'Atualizar Profissional',
+        text:
+          'UPDATE profissional SET experiencia = $1, nome = $2, numero_diploma = $3, numero_carteira = $4 WHERE codprofissional = $5 RETURNING *',
+        values: [
+          profissional.getAnosExperiencia(),
+          profissional.getNome(),
+          profissional.getNumeroDiploma(),
+          profissional.getNumeroCarteira(),
+          profissional.getId(),
+        ],
+      };
 
-  //     const pacienteAtualizado = await pool.query(queryUpdate);
+      const profissionalDB = await pool.query(queryUpdate);
 
-  //     conexao.close();
+      conexao.close();
 
-  //     return pacienteAtualizado.rows[0];
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // }
+      if (!profissionalDB.rows[0]) {
+        throw new Error();
+      }
+      const profissionalAtualizado: ProfissionalDBDTO = profissionalDB.rows[0];
+      return profissionalAtualizado;
+    } catch (err) {
+      console.log(err);
+
+      return err;
+    }
+  }
 
   // public async deletar(paciente: Paciente): Promise<number> {
   //   try {

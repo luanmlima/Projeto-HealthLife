@@ -69,9 +69,9 @@ class PacienteController {
       paciente.setNome(nome);
       paciente.setIdade(idade);
 
-      const pacienteCriado = await pacienteDao.atualizar(paciente);
+      const pacienteAtualizado = await pacienteDao.atualizar(paciente);
 
-      return pacienteCriado;
+      return pacienteAtualizado;
     } catch (err) {
       return err.message;
     }

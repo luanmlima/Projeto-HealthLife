@@ -9,7 +9,7 @@ class BuscarPorCPFDAO {
 
     const querySelectUsuario = {
       name: 'Bucar-login',
-      text: `SELECT * FROM ${tabela} WHERE cpf = $1 AND status = 0`,
+      text: `SELECT * FROM ${tabela} WHERE cpf = $1 AND status = 1`,
       values: [cpf],
     };
 

@@ -44,22 +44,40 @@ profissionalRoute.post('/criar', async (request, response) => {
   }
 });
 
-// profissionalRoute.put('/atualizar', async (request, response) => {
-//   try {
-//     const { nome, id, idade } = request.body;
+profissionalRoute.put('/atualizar', async (request, response) => {
+  try {
+    const {
+      id,
+      anosExperiencia,
+      nome,
+      numeroDiploma,
+      numeroCarteira,
+      rua,
+      cidade,
+      bairro,
+      numero,
+      sala,
+    } = request.body;
 
-//     const pacienteController = new PacienteController();
+    const profissionalController = new ProfissionalController();
 
-//     const pacienteAtualizado = await pacienteController.atualizar({
-//       nome,
-//       id,
-//       idade,
-//     });
-//     response.json(pacienteAtualizado);
-//   } catch (error) {
-//     response.json({ message: error.message });
-//   }
-// });
+    const profissionalAtualizado = await profissionalController.atualizar({
+      id,
+      anosExperiencia,
+      nome,
+      numeroDiploma,
+      numeroCarteira,
+      rua,
+      cidade,
+      bairro,
+      numero,
+      sala,
+    });
+    response.json(profissionalAtualizado);
+  } catch (error) {
+    response.json({ message: error.message });
+  }
+});
 
 // profissionalRoute.delete('/:id', async (request, response) => {
 //   try {

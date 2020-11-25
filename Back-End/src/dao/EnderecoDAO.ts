@@ -39,6 +39,34 @@ class EnderecoDAO {
     }
   }
 
+  public async atualizar(endereco: Endereco): Promise<void> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
+
+      const queryUpdate = {
+        name: 'Atualizar Endereço',
+        text:
+          'UPDATE endereco SET rua = $1, cidade = $2, bairro = $3, numero = $4, sala = $5 WHERE codendereco = $6 RETURNING *',
+        values: [
+          endereco.getRua(),
+          endereco.getCidade(),
+          endereco.getBairro(),
+          endereco.getNumero(),
+          endereco.getSala(),
+          endereco.getId(),
+        ],
+      };
+
+      await pool.query(queryUpdate);
+
+      conexao.close();
+    } catch (err) {
+      return err;
+    }
+  }
+
   // public async deletar(usuario: Usuario): Promise<boolean> {
   //   try {
   //     const conexao = new FabricadeConexao();

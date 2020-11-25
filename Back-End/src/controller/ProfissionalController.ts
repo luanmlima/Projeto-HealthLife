@@ -22,13 +22,31 @@ interface ProfissionalDTO {
   numero: number;
   sala: number;
 }
-// interface PacienteSemUsuarioDTO {
-//   id: number;
-//   anosExperiencia: number;
-//   nome: string;
-//   endereco: Endereco;
-//   status: number;
-// }
+
+interface PacienteSemUsuarioDTO {
+  id: number;
+  anosExperiencia: number;
+  nome: string;
+  numeroDiploma: number;
+  numeroCarteira: number;
+  rua: string;
+  cidade: string;
+  bairro: string;
+  numero: number;
+  sala: number;
+}
+
+interface ProfissionalDBDTO {
+  codprofissional: number;
+  especialidade: string;
+  anosExperiencia: number;
+  nome: string;
+  codendereco: number;
+  usuario: number;
+  cpf: string;
+  numeroDiploma: number;
+  numeroCarteira: number;
+}
 
 class ProfissionalController {
   public async cadastrar({
@@ -102,22 +120,52 @@ class ProfissionalController {
     }
   }
 
-  // public async atualizar({ nome, id, idade }: PacienteSemUsuarioDTO) {
-  //   try {
-  //     const paciente = new Profissional();
-  //     const pacienteDao = new ProfissionalDAO();
+  public async atualizar({
+    id,
+    anosExperiencia,
+    nome,
+    numeroDiploma,
+    numeroCarteira,
+    rua,
+    cidade,
+    bairro,
+    numero,
+    sala,
+  }: PacienteSemUsuarioDTO) {
+    try {
+      const profissional = new Profissional();
+      const profissionalDao = new ProfissionalDAO();
+      const endereco = new Endereco();
+      const enderecoDao = new EnderecoDAO();
 
-  //     paciente.setId(id);
-  //     paciente.setNome(nome);
-  //     paciente.setIdade(idade);
+      profissional.setId(id);
+      profissional.setNome(nome);
+      profissional.setAnosExperiencia(anosExperiencia);
+      profissional.setNumeroCarteira(numeroCarteira);
+      profissional.setNumeroDiploma(numeroDiploma);
 
-  //     const pacienteCriado = await pacienteDao.atualizar(paciente);
+      const profissionalAtualizado = await profissionalDao.atualizar(
+        profissional,
+      );
+      if (profissionalAtualizado instanceof Error) {
+        throw new Error('Erro ao atualizar atualizado');
+      }
+      const profissionalDB: ProfissionalDBDTO = profissionalAtualizado;
 
-  //     return pacienteCriado;
-  //   } catch (err) {
-  //     return err.message;
-  //   }
-  // }
+      endereco.setBairro(bairro);
+      endereco.setRua(rua);
+      endereco.setNumero(numero);
+      endereco.setCidade(cidade);
+      endereco.setSala(sala);
+      endereco.setId(profissionalDB.codendereco);
+
+      await enderecoDao.atualizar(endereco);
+
+      return profissionalAtualizado;
+    } catch (err) {
+      return err.message;
+    }
+  }
 
   // public async deletar(id: number) {
   //   try {
