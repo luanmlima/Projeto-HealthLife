@@ -12,7 +12,7 @@ interface EnderecoDTO {
 }
 
 class EnderecoDAO {
-  public async cadastrar(endereco: Endereco): Promise<number | Error> {
+  public async cadastrar(endereco: Endereco): Promise<number> {
     try {
       const conexao = new FabricadeConexao();
       conexao.conexao();
