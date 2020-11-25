@@ -192,32 +192,32 @@ class ProfissionalController {
     }
   }
 
-  // public async logar(login: string, senha: string) {
-  //   try {
-  //     const paciente = new Profissional();
-  //     const usuario = new Usuario();
-  //     const pacienteDao = new ProfissionalDAO();
-  //     const usuarioDao = new UsuarioDAO();
+  public async logar(login: string, senha: string) {
+    try {
+      const profissional = new Profissional();
+      const usuario = new Usuario();
+      const profissionalDao = new ProfissionalDAO();
+      const usuarioDao = new UsuarioDAO();
 
-  //     usuario.setLogin(login);
-  //     usuario.setSenha(senha);
+      usuario.setLogin(login);
+      usuario.setSenha(senha);
 
-  //     const usuarioLogado = await usuarioDao.login(usuario);
-  //     if (usuarioLogado === 0) {
-  //       throw new Error('Login ou senha incorreta');
-  //     }
+      const usuarioLogado = await usuarioDao.login(usuario);
+      if (usuarioLogado === 0) {
+        throw new Error('Login ou senha incorreta ou usuario desativado');
+      }
 
-  //     usuario.setId(usuarioLogado);
+      usuario.setId(usuarioLogado);
 
-  //     paciente.setUsuario(usuario);
+      profissional.setUsuario(usuario);
 
-  //     const pacienteLogado = await pacienteDao.login(paciente);
+      const profissionalLogado = await profissionalDao.login(profissional);
 
-  //     return pacienteLogado;
-  //   } catch (err) {
-  //     return err.message;
-  //   }
-  // }
+      return profissionalLogado;
+    } catch (err) {
+      return err.message;
+    }
+  }
 
   // public async listar(id: number) {
   //   try {

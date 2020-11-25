@@ -114,29 +114,30 @@ class ProfissionalDAO {
     }
   }
 
-  // public async login(profissional: Paciente): Promise<Paciente> {
-  //   try {
-  //     const conexao = new FabricadeConexao();
-  //     conexao.conexao();
-  //     const pool = new Pool();
+  public async login(profissional: Profissional): Promise<ProfissionalDBDTO> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
 
-  //     const queryPacienteLogin = {
-  //       name: 'Selecionar Usuario',
-  //       text: 'SELECT * FROM paciente WHERE usuario = $1',
-  //       values: [paciente.getUsuario()?.getId()],
-  //     };
+      const queryProfissionalLogin = {
+        name: 'Selecionar Usuario',
+        text: 'SELECT * FROM profissional WHERE usuario = $1',
+        values: [profissional.getUsuario()?.getId()],
+      };
 
-  //     const queryPacienteLogado = await pool.query(queryPacienteLogin);
+      const queryprofissionalLogado = await pool.query(queryProfissionalLogin);
 
-  //     const pacienteLogado: Paciente = queryPacienteLogado.rows[0];
+      const profissionalLogado: ProfissionalDBDTO =
+        queryprofissionalLogado.rows[0];
 
-  //     conexao.close();
+      conexao.close();
 
-  //     return pacienteLogado;
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // }
+      return profissionalLogado;
+    } catch (err) {
+      return err;
+    }
+  }
 
   // public async listar(paciente: Paciente): Promise<Paciente> {
   //   try {

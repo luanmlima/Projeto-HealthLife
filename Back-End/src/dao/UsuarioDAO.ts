@@ -8,6 +8,7 @@ interface UsuarioDTO {
   login: string;
   senha: string;
   tipo: string;
+  status: string;
 }
 
 class UsuarioDAO {
@@ -97,6 +98,10 @@ class UsuarioDAO {
       }
 
       const usuarioLogado: UsuarioDTO = queryUsuarioLogado.rows[0];
+
+      if (Number(usuarioLogado.status) === 0) {
+        throw new Error();
+      }
 
       const senhaLogin = String(usuario.getSenha());
 

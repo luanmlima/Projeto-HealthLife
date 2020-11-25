@@ -114,7 +114,7 @@ class PacienteController {
 
       const usuarioLogado = await usuarioDao.login(usuario);
       if (usuarioLogado === 0) {
-        throw new Error('Login ou senha incorreta');
+        throw new Error('Login ou senha incorreta ou usuario desativado');
       }
 
       usuario.setId(usuarioLogado);

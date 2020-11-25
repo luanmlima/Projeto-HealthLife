@@ -94,24 +94,24 @@ profissionalRoute.delete('/:id', async (request, response) => {
   }
 });
 
-// profissionalRoute.post('/', async (request, response) => {
-//   try {
-//     const { login, senha } = request.body;
+profissionalRoute.post('/', async (request, response) => {
+  try {
+    const { login, senha } = request.body;
 
-//     const pacienteController = new PacienteController();
+    const profissionalController = new ProfissionalController();
 
-//     const pacienteLogado = await pacienteController.logar(login, senha);
-//     response.status(200).json(pacienteLogado);
-//   } catch (error) {
-//     response.status(404).json({ message: error.message });
-//   }
-// });
+    const profissionalLogado = await profissionalController.logar(login, senha);
+    response.status(200).json(profissionalLogado);
+  } catch (error) {
+    response.status(404).json({ message: error.message });
+  }
+});
 
 // profissionalRoute.get('/:id', async (request, response) => {
 //   try {
 //     const { id } = request.params;
 
-//     const pacienteController = new PacienteController();
+//     const profissionalController = new PacienteController();
 
 //     const paciente = await pacienteController.listar(Number(id));
 //     response.status(200).json(paciente);
