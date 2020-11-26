@@ -44,6 +44,7 @@ class AgendamentoController {
       profissional.setId(codprofissional);
       agendamento.setPaciente(paciente);
       agendamento.setProfissional(profissional);
+      agendamento.setData(dataFormatada);
 
       const agendamentoCriado = await agendamentoDao.cadastrar(agendamento);
 
