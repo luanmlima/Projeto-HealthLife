@@ -13,6 +13,7 @@ agendamentoRouter.post('/criar', async (request, response) => {
       dataagendada,
       codpaciente,
       codprofissional,
+      codagendamento: 0,
     });
     response.json(agendamentoCriado);
   } catch (error) {
@@ -20,62 +21,56 @@ agendamentoRouter.post('/criar', async (request, response) => {
   }
 });
 
-// agendamentoRouter.put('/atualizar', async (request, response) => {
-//   try {
-//     const { nome, id, idade } = request.body;
+agendamentoRouter.put('/atualizar', async (request, response) => {
+  try {
+    const { dataagendada, codprofissional, codagendamento } = request.body;
 
-//     const agendamentoController = new AgendamentoController();
+    const agendamentoController = new AgendamentoController();
 
-//     const agendamentoAtualizado = await agendamentoController.atualizar({
-//       nome,
-//       id,
-//       idade,
-//     });
-//     response.json(agendamentoAtualizado);
-//   } catch (error) {
-//     response.json({ message: error.message });
-//   }
-// });
+    const agendamentoAtualizado = await agendamentoController.atualizar({
+      dataagendada,
+      codpaciente: 0,
+      codprofissional,
+      codagendamento,
+    });
+    response.json(agendamentoAtualizado);
+  } catch (error) {
+    response.json({ message: error.message });
+  }
+});
 
-// agendamentoRouter.delete('/:id', async (request, response) => {
-//   try {
-//     const { id } = request.params;
+agendamentoRouter.delete('/:codagendamento', async (request, response) => {
+  try {
+    const { codagendamento } = request.params;
 
-//     const agendamentoController = new AgendamentoController();
+    const agendamentoController = new AgendamentoController();
 
-//     const agendamentoDeletadoMessage = await agendamentoController.deletar(
-//       Number(id),
-//     );
-//     response.status(201).json(agendamentoDeletadoMessage);
-//   } catch (error) {
-//     response.status(404).json({ message: error.message });
-//   }
-// });
+    const agendamentoDeletadoMessage = await agendamentoController.deletar(
+      Number(codagendamento),
+    );
+    response.status(201).json(agendamentoDeletadoMessage);
+  } catch (error) {
+    response.status(404).json({ message: error.message });
+  }
+});
 
-// agendamentoRouter.post('/', async (request, response) => {
-//   try {
-//     const { login, senha } = request.body;
+agendamentoRouter.get('/:busca', async (request, response) => {
+  try {
+    const { busca } = request.params;
 
-//     const agendamentoController = new AgendamentoController();
+    const [id, usuario] = busca.split('-');
+    console.log(id, usuario);
 
-//     const agendamentoLogado = await agendamentoController.logar(login, senha);
-//     response.status(200).json(agendamentoLogado);
-//   } catch (error) {
-//     response.status(404).json({ message: error.message });
-//   }
-// });
+    const agendamentoController = new AgendamentoController();
 
-// agendamentoRouter.get('/:id', async (request, response) => {
-//   try {
-//     const { id } = request.params;
-
-//     const agendamentoController = new AgendamentoController();
-
-//     const agendamento = await agendamentoController.listar(Number(id));
-//     response.status(200).json(agendamento);
-//   } catch (error) {
-//     response.status(404).json({ message: error.message });
-//   }
-// });
+    const listaAgendamentos = await agendamentoController.listar(
+      Number(id),
+      usuario,
+    );
+    response.status(200).json(listaAgendamentos);
+  } catch (error) {
+    response.status(404).json({ message: error.message });
+  }
+});
 
 export default agendamentoRouter;

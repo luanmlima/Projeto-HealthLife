@@ -8,10 +8,29 @@ import AgendamentoDAO from '../dao/AgendamentoDAO';
 interface MessageRetorno {
   message: string;
 }
+
 interface AgendamentoDTO {
   dataagendada: string;
   codpaciente: number;
   codprofissional: number;
+  codagendamento: number;
+}
+
+interface EnderecoAgendamento {
+  rua: string;
+  cidade: string;
+  bairro: string;
+  numero: number;
+  sala: number;
+}
+
+interface AgendamentoCompletoDTO {
+  numeroAgendamento: number;
+  nomePaciente: string;
+  idadePaciente: number;
+  nomeProfissional: string;
+  especialidadeProfissional: string;
+  endereco: EnderecoAgendamento;
 }
 
 class AgendamentoController {
@@ -19,7 +38,7 @@ class AgendamentoController {
     dataagendada,
     codpaciente,
     codprofissional,
-  }: AgendamentoDTO) {
+  }: AgendamentoDTO): Promise<Agendamento | Error> {
     try {
       const paciente = new Paciente();
       const profissional = new Profissional();
@@ -36,7 +55,7 @@ class AgendamentoController {
 
       if (agendamentoExiste) {
         throw new Error(
-          'Data solicitada não disponivel para esse profissional',
+          'Data e hora solicitada não disponivel para esse profissional',
         );
       }
 
@@ -54,92 +73,90 @@ class AgendamentoController {
     }
   }
 
-  // public async atualizar({ nome, id, idade }: PacienteSemUsuarioDTO) {
-  //   try {
-  //     const paciente = new Paciente();
-  //     const pacienteDao = new PacienteDAO();
+  public async atualizar({
+    codagendamento,
+    dataagendada,
+    codprofissional,
+  }: AgendamentoDTO): Promise<Agendamento | Error> {
+    try {
+      const agendamento = new Agendamento();
+      const verificarData = new VerificarData();
+      const agendamentoDao = new AgendamentoDAO();
 
-  //     paciente.setId(id);
-  //     paciente.setNome(nome);
-  //     paciente.setIdade(idade);
+      const dataFormatada = startOfHour(parseISO(dataagendada));
 
-  //     const pacienteAtualizado = await pacienteDao.atualizar(paciente);
+      const agendamentoExiste = await verificarData.verify(
+        dataFormatada,
+        codprofissional,
+      );
 
-  //     return pacienteAtualizado;
-  //   } catch (err) {
-  //     return err.message;
-  //   }
-  // }
+      if (agendamentoExiste) {
+        throw new Error(
+          'Data e hora solicitada não disponivel para esse profissional',
+        );
+      }
 
-  // public async deletar(id: number): Promise<MessageRetorno> {
-  //   try {
-  //     const paciente = new Paciente();
-  //     const usuario = new Usuario();
-  //     const pacienteDao = new PacienteDAO();
-  //     const usuarioDao = new UsuarioDAO();
+      agendamento.setData(dataFormatada);
+      agendamento.setId(codagendamento);
 
-  //     paciente.setId(id);
+      const agendamentoAtualizado = await agendamentoDao.atualizar(agendamento);
 
-  //     const idUsuario = await pacienteDao.deletar(paciente);
+      return agendamentoAtualizado;
+    } catch (err) {
+      return err.message;
+    }
+  }
 
-  //     if (idUsuario === 0) {
-  //       throw new Error('Paciente não encontrado');
-  //     }
+  public async deletar(codagendamento: number): Promise<MessageRetorno> {
+    try {
+      const agendamento = new Agendamento();
+      const agendamentoDao = new AgendamentoDAO();
 
-  //     usuario.setId(idUsuario);
+      agendamento.setId(codagendamento);
 
-  //     await usuarioDao.deletar(usuario);
+      const agendamentoDeletado = await agendamentoDao.deletar(agendamento);
 
-  //     return { message: 'Paciente desativado com sucesso' };
-  //   } catch (err) {
-  //     return err.message;
-  //   }
-  // }
+      if (agendamentoDeletado === 0) {
+        throw new Error('Agendamento não encontrado');
+      }
 
-  // public async logar(login: string, senha: string): Promise<Paciente> {
-  //   try {
-  //     const paciente = new Paciente();
-  //     const usuario = new Usuario();
-  //     const pacienteDao = new PacienteDAO();
-  //     const usuarioDao = new UsuarioDAO();
+      return { message: 'Agendamento deletado com sucesso' };
+    } catch (err) {
+      return err.message;
+    }
+  }
 
-  //     usuario.setLogin(login);
-  //     usuario.setSenha(senha);
+  public async listar(
+    id: number,
+    usuario: string,
+  ): Promise<AgendamentoCompletoDTO[]> {
+    try {
+      const agendamento = new Agendamento();
+      const agendamentoDao = new AgendamentoDAO();
+      const paciente = new Paciente();
+      const profissional = new Profissional();
 
-  //     const usuarioLogado = await usuarioDao.login(usuario);
-  //     if (usuarioLogado === 0) {
-  //       throw new Error('Login ou senha incorreta ou usuario desativado');
-  //     }
+      if (usuario === 'paciente') {
+        paciente.setId(id);
+        agendamento.setPaciente(paciente);
+      } else {
+        profissional.setId(id);
+        agendamento.setProfissional(profissional);
+      }
 
-  //     usuario.setId(usuarioLogado);
+      const agendamentoListado = await agendamentoDao.listar(
+        agendamento,
+        usuario,
+      );
+      if (agendamentoListado instanceof Error) {
+        throw new Error('Agendamentos não encontrados');
+      }
 
-  //     paciente.setUsuario(usuario);
-
-  //     const pacienteLogado = await pacienteDao.login(paciente);
-
-  //     return pacienteLogado;
-  //   } catch (err) {
-  //     return err.message;
-  //   }
-  // }
-
-  // public async listar(id: number): Promise<PacienteDBDTO> {
-  //   try {
-  //     const paciente = new Paciente();
-  //     const pacienteDao = new PacienteDAO();
-
-  //     paciente.setId(id);
-
-  //     const pacienteListado = await pacienteDao.listar(paciente);
-  //     if (pacienteListado instanceof Error) {
-  //       throw new Error('Usuario desativado ou não existe');
-  //     }
-
-  //     return pacienteListado;
-  //   } catch (err) {
-  //     return err.message;
-  //   }
-  // }
+      return agendamentoListado;
+    } catch (err) {
+      return err.message;
+    }
+  }
 }
 
 export default AgendamentoController;
