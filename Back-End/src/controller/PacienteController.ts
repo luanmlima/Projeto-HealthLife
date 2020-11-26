@@ -3,6 +3,7 @@ import Usuario from '../models/Usuario';
 import PacienteDAO from '../dao/PacienteDAO';
 import UsuarioDAO from '../dao/UsuarioDAO';
 import BuscaPorCPFDAO from '../utils/BuscarPorCPFDAO';
+import BuscaAgendamento from '../utils/BuscaAgendamentos';
 
 interface PacienteDTO {
   nome: string;
@@ -103,6 +104,17 @@ class PacienteController {
       const usuario = new Usuario();
       const pacienteDao = new PacienteDAO();
       const usuarioDao = new UsuarioDAO();
+      const buscarAgendamentosExistentes = new BuscaAgendamento();
+
+      const existeAgendamentosFuturos = buscarAgendamentosExistentes.getAgendamento(
+        id,
+        'paciente',
+      );
+      if (existeAgendamentosFuturos) {
+        throw new Error(
+          'Existe agendamentos futuros ou com a data de hoje na sua conta, por favor faça o cancelamentos deles antes de desativar sua conta, se esse agendamento for de hoje mas de horas passadas, por favor efetue o cancelamento da sua conta amanhã',
+        );
+      }
 
       paciente.setId(id);
 

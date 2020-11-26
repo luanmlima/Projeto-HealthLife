@@ -6,6 +6,7 @@ import ProfissionalDAO from '../dao/ProfissionalDAO';
 import UsuarioDAO from '../dao/UsuarioDAO';
 import EnderecoDAO from '../dao/EnderecoDAO';
 import BuscaPorCPFDAO from '../utils/BuscarPorCPFDAO';
+import BuscaAgendamento from '../utils/BuscaAgendamentos';
 
 interface ProfissionalDTO {
   especialidade: string;
@@ -213,7 +214,17 @@ class ProfissionalController {
       const usuario = new Usuario();
       const profissionalDao = new ProfissionalDAO();
       const usuarioDao = new UsuarioDAO();
+      const buscarAgendamentosExistentes = new BuscaAgendamento();
 
+      const existeAgendamentosFuturos = buscarAgendamentosExistentes.getAgendamento(
+        id,
+        'profissional',
+      );
+      if (existeAgendamentosFuturos) {
+        throw new Error(
+          'Existe agendamentos futuros ou com a data de hoje na sua conta, por favor faça o cancelamentos deles antes de desativar sua conta, se esse agendamento for de hoje mas de horas passadas, por favor efetue o cancelamento da sua conta amanhã',
+        );
+      }
       profissional.setId(id);
 
       const idUsuario = await profissionalDao.deletar(profissional);
