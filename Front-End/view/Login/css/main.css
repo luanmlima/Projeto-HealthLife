@@ -271,6 +271,7 @@ iframe {
   color: #333333;
   line-height: 1.2;
   text-align: center;
+  margin-top: -140px;
 }
 
 
@@ -629,3 +630,24 @@ input.input100 {
   color: #fff;
 }
 
+.errorTxt {
+  color: #8d230f;
+}
+
+.cadastrar {
+  margin-top: 20px !important;
+  text-decoration: none !important;
+  color: #28a745 !important;
+  cursor: pointer !important;
+}
+
+.cadastrar:hover {
+  color: #fff !important;
+}
+
+.messageReturn {
+  position: relative;
+  margin-top: 10px;
+  font-size: 1.2rem;
+  margin-left: 35px;
+}

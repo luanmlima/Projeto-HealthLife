@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/view/main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="cadastro.css">
+    <link rel="stylesheet" href="/Login/css/footer.css">
+
+    <title>Cadastro | HealthLife</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <main class="main-center">
+            <h2>Por Favor Insira os seu dados</h2>
+            <form method="POST" action="cadastroDeUsuario">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputNome">Nome</label>
+                        <input type="text" class="form-control" id="inputNome">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputSobrenome">Sobrenome</label>
+                        <input type="text" class="form-control" id="inputSobrenome">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputCPF">CPF</label>
+                        <input type="number" class="form-control" id="inputCPF">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputAnosDeExperiencia">Anos de experiencia</label>
+                        <input type="number" class="form-control" id="inputAnosDeExperiencia">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">Email para login</label>
+                        <input type="email" class="form-control" id="inputEmail4">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputPassword4">Senha</label>
+                        <input type="password" class="form-control" id="inputPassword4">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputEspecilidade">Especilidade</label>
+                        <input type="email" class="form-control" id="inputEspecilidade">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputNumeroDiploma">Numero do diploma</label>
+                        <input type="number" class="form-control" id="inputNumeroDiploma">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputNumeroDaCarteira">Numero da Carteira (CREA, CRM, ...)</label>
+                        <input type="number" class="form-control" id="inputNumeroDaCarteira">
+                    </div>
+                </div>
+
+                <div>Endereço do consultorio</div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputRua">Rua</label>
+                        <input type="text" class="form-control" id="inputRua">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputNumero">Numero</label>
+                        <input type="number" class="form-control" id="inputNumero">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputNumeroSala">Numero da Sala</label>
+                        <input type="number" class="form-control" id="inputNumeroSala">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputCidade">Cidade</label>
+                        <input type="text" class="form-control" id="inputCidade">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputBairro">Bairro</label>
+                        <input type="text" class="form-control" id="inputBairro">
+                    </div>
+                </div>
+                <button type="submit" id="myBtn" class="btn btn-outline-success">Cadastrar</button>
+            </form>
+        </main>
+
+    </div>
+
+    <footer class="page-footer font-small blue">
+        <div class="footer-copyright text-center py-3">© 2020 Copyright:
+            <a href="#"> HealthLife</a>
+        </div>
+    </footer>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
