@@ -97,6 +97,10 @@ class ProfissionalController {
       const usuarioDao = new UsuarioDAO();
       const buscaCPF = new BuscaPorCPFDAO();
 
+      if (cpf.length !== 11) {
+        throw new Error('CPF Invalido');
+      }
+
       const profissionalExiste = await buscaCPF.getCPF(cpf, 'profissional');
       if (profissionalExiste === true) {
         throw new Error('Profissional já cadastrado');

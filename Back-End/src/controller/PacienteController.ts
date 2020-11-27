@@ -36,6 +36,12 @@ class PacienteController {
       const pacienteDao = new PacienteDAO();
       const usuarioDao = new UsuarioDAO();
       const buscaCPF = new BuscaPorCPFDAO();
+      if (cpf.length !== 11) {
+        throw new Error('CPF Invalido');
+      }
+      if (idade < 18) {
+        throw new Error('Permitido só para maiores de 18 anos');
+      }
 
       const pacienteExiste = await buscaCPF.getCPF(cpf, 'paciente');
 
