@@ -155,6 +155,10 @@ class PacienteController {
 
       const pacienteLogado = await pacienteDao.login(paciente);
 
+      if (pacienteLogado instanceof Error) {
+        throw new Error('Usuario não cadastrado como paciente');
+      }
+
       return pacienteLogado;
     } catch (err) {
       return err;

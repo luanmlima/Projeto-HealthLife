@@ -129,6 +129,10 @@ class ProfissionalDAO {
 
       const queryprofissionalLogado = await pool.query(queryProfissionalLogin);
 
+      if (!queryprofissionalLogado.rows[0]) {
+        throw new Error();
+      }
+
       const profissionalLogado: ProfissionalDBDTO =
         queryprofissionalLogado.rows[0];
 

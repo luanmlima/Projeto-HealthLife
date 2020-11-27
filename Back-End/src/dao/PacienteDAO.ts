@@ -107,6 +107,10 @@ class PacienteDAO {
 
       const queryPacienteLogado = await pool.query(queryPacienteLogin);
 
+      if (!queryPacienteLogado.rows[0]) {
+        throw new Error();
+      }
+
       const pacienteLogado: Paciente = queryPacienteLogado.rows[0];
 
       conexao.close();

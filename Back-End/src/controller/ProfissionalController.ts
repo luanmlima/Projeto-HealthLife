@@ -265,6 +265,10 @@ class ProfissionalController {
 
       const profissionalLogado = await profissionalDao.login(profissional);
 
+      if (profissionalLogado instanceof Error) {
+        throw new Error('Usuario não cadastrado como profissional');
+      }
+
       return profissionalLogado;
     } catch (err) {
       return err;
