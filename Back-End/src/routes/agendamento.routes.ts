@@ -85,4 +85,25 @@ agendamentoRouter.get('/:busca', async (request, response) => {
   }
 });
 
+agendamentoRouter.get('/horas/:dia', async (request, response) => {
+  try {
+    const { dia } = request.params;
+
+    const [id, data] = dia.split('*');
+
+    const agendamentoController = new AgendamentoController();
+
+    const listaAgendamentos = await agendamentoController.listarHorasDisponiveis(
+      Number(id),
+      data,
+    );
+    if (listaAgendamentos instanceof Error) {
+      throw new Error(listaAgendamentos.message);
+    }
+    response.status(200).json(listaAgendamentos);
+  } catch (error) {
+    response.status(404).json({ message: error.message });
+  }
+});
+
 export default agendamentoRouter;

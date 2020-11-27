@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import FabricadeConexao from './FabricadeConexao';
+import FabricadeConexao from '../utils/FabricadeConexao';
 
 class BuscarPorCPFDAO {
   public async getCPF(cpf: string, tabela: string): Promise<boolean | number> {

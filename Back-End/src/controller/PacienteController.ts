@@ -2,8 +2,8 @@ import Paciente from '../models/Paciente';
 import Usuario from '../models/Usuario';
 import PacienteDAO from '../dao/PacienteDAO';
 import UsuarioDAO from '../dao/UsuarioDAO';
-import BuscaPorCPFDAO from '../utils/BuscarPorCPFDAO';
-import BuscaAgendamento from '../utils/BuscaAgendamentos';
+import BuscaPorCPFDAO from '../dao/BuscarPorCPFDAO';
+import BuscaAgendamentosDAO from '../dao/BuscaAgendamentosDAO';
 
 interface PacienteDTO {
   nome: string;
@@ -104,7 +104,7 @@ class PacienteController {
       const usuario = new Usuario();
       const pacienteDao = new PacienteDAO();
       const usuarioDao = new UsuarioDAO();
-      const buscarAgendamentosExistentes = new BuscaAgendamento();
+      const buscarAgendamentosExistentes = new BuscaAgendamentosDAO();
 
       const existeAgendamentosFuturos = await buscarAgendamentosExistentes.getAgendamento(
         id,

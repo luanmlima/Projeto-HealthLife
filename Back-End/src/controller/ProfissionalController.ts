@@ -5,8 +5,8 @@ import Endereco from '../models/Endereco';
 import ProfissionalDAO from '../dao/ProfissionalDAO';
 import UsuarioDAO from '../dao/UsuarioDAO';
 import EnderecoDAO from '../dao/EnderecoDAO';
-import BuscaPorCPFDAO from '../utils/BuscarPorCPFDAO';
-import BuscaAgendamento from '../utils/BuscaAgendamentos';
+import BuscaPorCPFDAO from '../dao/BuscarPorCPFDAO';
+import BuscaAgendamentosDAO from '../dao/BuscaAgendamentosDAO';
 
 interface ProfissionalDTO {
   especialidade: string;
@@ -214,7 +214,7 @@ class ProfissionalController {
       const usuario = new Usuario();
       const profissionalDao = new ProfissionalDAO();
       const usuarioDao = new UsuarioDAO();
-      const buscarAgendamentosExistentes = new BuscaAgendamento();
+      const buscarAgendamentosExistentes = new BuscaAgendamentosDAO();
 
       const existeAgendamentosFuturos = await buscarAgendamentosExistentes.getAgendamento(
         id,

@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import { getHours } from 'date-fns';
 import Agendamento from '../models/Agendamento';
 import FabricadeConexao from '../utils/FabricadeConexao';
 
@@ -152,6 +153,39 @@ class AgendamentoDAO {
 
       conexao.close();
       return agendamentos;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  public async listarHorasDisponiveis(
+    agendamento: Agendamento,
+  ): Promise<number[]> {
+    try {
+      const conexao = new FabricadeConexao();
+      conexao.conexao();
+      const pool = new Pool();
+
+      const querySelectAgendamentos = {
+        name: 'Selecionar todos as datas dos agendamentos do usuario',
+        text: `SELECT dataagendada FROM agendamento WHERE codprofissional = $1 AND date(dataagendada) = date($2)`,
+        values: [agendamento.getProfissional()?.getId(), agendamento.getData()],
+      };
+
+      const datasAgendamentos = await pool.query(querySelectAgendamentos);
+
+      const horasDoBanco = [];
+
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < datasAgendamentos.rows.length; i++) {
+        const dataDoAgendamentoNoBanco = getHours(
+          new Date(datasAgendamentos.rows[i].dataagendada),
+        );
+        horasDoBanco.push(dataDoAgendamentoNoBanco);
+      }
+
+      conexao.close();
+      return horasDoBanco;
     } catch (err) {
       return err;
     }

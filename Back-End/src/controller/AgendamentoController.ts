@@ -1,8 +1,9 @@
 import { startOfHour, parseISO } from 'date-fns';
+import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz';
 import Agendamento from '../models/Agendamento';
 import Profissional from '../models/Profissional';
 import Paciente from '../models/Paciente';
-import VerificarData from '../utils/VerificarData';
+import VerificarDataDAO from '../dao/VerificarDataDAO';
 import AgendamentoDAO from '../dao/AgendamentoDAO';
 
 interface MessageRetorno {
@@ -43,12 +44,13 @@ class AgendamentoController {
       const paciente = new Paciente();
       const profissional = new Profissional();
       const agendamento = new Agendamento();
-      const verificarData = new VerificarData();
+      const verificarDataDAO = new VerificarDataDAO();
       const agendamentoDao = new AgendamentoDAO();
 
       const dataFormatada = startOfHour(parseISO(dataagendada));
+      console.log(dataFormatada);
 
-      const agendamentoExiste = await verificarData.verify(
+      const agendamentoExiste = await verificarDataDAO.verify(
         dataFormatada,
         codprofissional,
       );
@@ -80,12 +82,12 @@ class AgendamentoController {
   }: AgendamentoDTO): Promise<Agendamento | Error> {
     try {
       const agendamento = new Agendamento();
-      const verificarData = new VerificarData();
+      const verificarDataDAO = new VerificarDataDAO();
       const agendamentoDao = new AgendamentoDAO();
 
       const dataFormatada = startOfHour(parseISO(dataagendada));
 
-      const agendamentoExiste = await verificarData.verify(
+      const agendamentoExiste = await verificarDataDAO.verify(
         dataFormatada,
         codprofissional,
       );
@@ -153,6 +155,38 @@ class AgendamentoController {
       }
 
       return agendamentoListado;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  public async listarHorasDisponiveis(
+    id: number,
+    data: string,
+  ): Promise<number[]> {
+    try {
+      // Recebe data no formato "2020-11-26"
+      const agendamento = new Agendamento();
+      const agendamentoDao = new AgendamentoDAO();
+      const profissional = new Profissional();
+      profissional.setId(id);
+      agendamento.setProfissional(profissional);
+      agendamento.setData(new Date(data));
+
+      const horasDiarias: number[] = [10, 11, 12, 13, 14, 15, 16, 17];
+      const horasDobanco: number[] = await agendamentoDao.listarHorasDisponiveis(
+        agendamento,
+      );
+
+      const horasDisponiveis: number[] = horasDiarias.filter(
+        hora => !horasDobanco.includes(hora),
+      );
+
+      if (horasDisponiveis.length === 0) {
+        throw new Error('Não existe horas disponiveis para esse dia');
+      }
+
+      return horasDisponiveis;
     } catch (err) {
       return err;
     }

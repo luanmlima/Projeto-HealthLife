@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 import { lightFormat } from 'date-fns';
-import FabricadeConexao from './FabricadeConexao';
+import FabricadeConexao from '../utils/FabricadeConexao';
 
 class BuscaAgendamentos {
   public async getAgendamento(id: number, usuario: string): Promise<boolean> {
@@ -23,7 +23,6 @@ class BuscaAgendamentos {
 
     let existeAgendamentoFuturo = false;
 
-    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < datasAgendamentos.rows.length; i++) {
       const dataDoAgendamentoNoBanco = lightFormat(
         new Date(datasAgendamentos.rows[i].dataagendada),

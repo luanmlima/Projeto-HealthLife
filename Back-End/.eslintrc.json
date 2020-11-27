@@ -25,6 +25,7 @@
   "rules": {
     "prettier/prettier": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-plusplus": "off",
     "class-methods-use-this": "off",
     "consistent-return": "off",
     "no-console": "off",

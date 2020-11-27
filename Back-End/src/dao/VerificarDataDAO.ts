@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import FabricadeConexao from './FabricadeConexao';
+import FabricadeConexao from '../utils/FabricadeConexao';
 
 class VerificarData {
   public async verify(data: Date, idProfissional: number): Promise<boolean> {
