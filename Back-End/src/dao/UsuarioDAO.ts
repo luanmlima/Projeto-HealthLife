@@ -75,13 +75,21 @@ class UsuarioDAO {
 
       const usuarioParaAtualizar = await pool.query(querySelectUsuario);
 
+      const senha = usuario.getSenha();
+
+      let senhaCriptografada = '';
+
+      if (senha !== null) {
+        senhaCriptografada = await hash(senha, 10);
+      }
+
       const queryUpdadte = {
         name: 'Atualizar usuario',
         text:
           'UPDATE usuario SET login = $1, senha = $2, status = $3 WHERE codusuario = $4',
         values: [
           usuario.getLogin(),
-          usuario.getSenha(),
+          senhaCriptografada,
           1,
           usuarioParaAtualizar.rows[0].usuario,
         ],

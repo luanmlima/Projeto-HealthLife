@@ -1,5 +1,4 @@
 import { startOfHour, parseISO } from 'date-fns';
-import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz';
 import Agendamento from '../models/Agendamento';
 import Profissional from '../models/Profissional';
 import Paciente from '../models/Paciente';

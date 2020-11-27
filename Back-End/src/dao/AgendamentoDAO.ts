@@ -176,7 +176,6 @@ class AgendamentoDAO {
 
       const horasDoBanco = [];
 
-      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < datasAgendamentos.rows.length; i++) {
         const dataDoAgendamentoNoBanco = getHours(
           new Date(datasAgendamentos.rows[i].dataagendada),
