@@ -38,9 +38,12 @@ profissionalRoute.post('/criar', async (request, response) => {
       numero,
       sala,
     });
+    if (profissionalCriado instanceof Error) {
+      throw new Error(profissionalCriado.message);
+    }
     response.json(profissionalCriado);
   } catch (error) {
-    response.json({ message: error.message });
+    response.status(400).json({ message: error.message });
   }
 });
 
@@ -73,9 +76,12 @@ profissionalRoute.put('/atualizar', async (request, response) => {
       numero,
       sala,
     });
+    if (profissionalAtualizado instanceof Error) {
+      throw new Error(profissionalAtualizado.message);
+    }
     response.json(profissionalAtualizado);
   } catch (error) {
-    response.json({ message: error.message });
+    response.status(400).json({ message: error.message });
   }
 });
 
@@ -88,6 +94,9 @@ profissionalRoute.delete('/:id', async (request, response) => {
     const profissionalDeletadoMessage = await profissionalController.deletar(
       Number(id),
     );
+    if (profissionalDeletadoMessage instanceof Error) {
+      throw new Error(profissionalDeletadoMessage.message);
+    }
     response.status(201).json(profissionalDeletadoMessage);
   } catch (error) {
     response.status(404).json({ message: error.message });
@@ -101,6 +110,10 @@ profissionalRoute.post('/', async (request, response) => {
     const profissionalController = new ProfissionalController();
 
     const profissionalLogado = await profissionalController.logar(login, senha);
+    if (profissionalLogado instanceof Error) {
+      throw new Error(profissionalLogado.message);
+    }
+
     response.status(200).json(profissionalLogado);
   } catch (error) {
     response.status(404).json({ message: error.message });
@@ -114,6 +127,9 @@ profissionalRoute.get('/:id', async (request, response) => {
     const profissionalController = new ProfissionalController();
 
     const profissional = await profissionalController.listar(Number(id));
+    if (profissional instanceof Error) {
+      throw new Error(profissional.message);
+    }
     response.status(200).json(profissional);
   } catch (error) {
     response.status(404).json({ message: error.message });
@@ -124,6 +140,9 @@ profissionalRoute.get('/', async (request, response) => {
   try {
     const profissionalController = new ProfissionalController();
     const profissionais = await profissionalController.listarTodos();
+    if (profissionais instanceof Error) {
+      throw new Error(profissionais.message);
+    }
     response.status(200).json(profissionais);
   } catch (error) {
     response.status(404).json({ message: error.message });

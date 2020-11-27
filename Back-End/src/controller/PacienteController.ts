@@ -77,7 +77,7 @@ class PacienteController {
 
       return pacienteCriado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -94,7 +94,7 @@ class PacienteController {
 
       return pacienteAtualizado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -106,7 +106,7 @@ class PacienteController {
       const usuarioDao = new UsuarioDAO();
       const buscarAgendamentosExistentes = new BuscaAgendamento();
 
-      const existeAgendamentosFuturos = buscarAgendamentosExistentes.getAgendamento(
+      const existeAgendamentosFuturos = await buscarAgendamentosExistentes.getAgendamento(
         id,
         'paciente',
       );
@@ -130,7 +130,7 @@ class PacienteController {
 
       return { message: 'Paciente desativado com sucesso' };
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -157,7 +157,7 @@ class PacienteController {
 
       return pacienteLogado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -175,7 +175,7 @@ class PacienteController {
 
       return pacienteListado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 }

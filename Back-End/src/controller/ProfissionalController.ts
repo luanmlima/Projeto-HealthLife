@@ -157,7 +157,7 @@ class ProfissionalController {
 
       return profissionalCriado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -204,7 +204,7 @@ class ProfissionalController {
 
       return profissionalAtualizado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -216,10 +216,11 @@ class ProfissionalController {
       const usuarioDao = new UsuarioDAO();
       const buscarAgendamentosExistentes = new BuscaAgendamento();
 
-      const existeAgendamentosFuturos = buscarAgendamentosExistentes.getAgendamento(
+      const existeAgendamentosFuturos = await buscarAgendamentosExistentes.getAgendamento(
         id,
         'profissional',
       );
+      console.log(existeAgendamentosFuturos);
       if (existeAgendamentosFuturos) {
         throw new Error(
           'Existe agendamentos futuros ou com a data de hoje na sua conta, por favor faça o cancelamentos deles antes de desativar sua conta, se esse agendamento for de hoje mas de horas passadas, por favor efetue o cancelamento da sua conta amanhã',
@@ -239,7 +240,7 @@ class ProfissionalController {
 
       return { message: 'Profissional desativado com sucesso' };
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -266,7 +267,7 @@ class ProfissionalController {
 
       return profissionalLogado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -305,7 +306,7 @@ class ProfissionalController {
 
       return profissionalEndereco;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -317,7 +318,7 @@ class ProfissionalController {
 
       return profissionaisListados;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 }

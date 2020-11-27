@@ -69,7 +69,7 @@ class AgendamentoController {
 
       return agendamentoCriado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -103,7 +103,7 @@ class AgendamentoController {
 
       return agendamentoAtualizado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -122,7 +122,7 @@ class AgendamentoController {
 
       return { message: 'Agendamento deletado com sucesso' };
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 
@@ -154,7 +154,7 @@ class AgendamentoController {
 
       return agendamentoListado;
     } catch (err) {
-      return err.message;
+      return err;
     }
   }
 }

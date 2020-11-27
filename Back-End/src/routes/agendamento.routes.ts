@@ -15,9 +15,12 @@ agendamentoRouter.post('/criar', async (request, response) => {
       codprofissional,
       codagendamento: 0,
     });
+    if (agendamentoCriado instanceof Error) {
+      throw new Error(agendamentoCriado.message);
+    }
     response.json(agendamentoCriado);
   } catch (error) {
-    response.json({ message: error.message });
+    response.status(400).json({ message: error.message });
   }
 });
 
@@ -33,9 +36,12 @@ agendamentoRouter.put('/atualizar', async (request, response) => {
       codprofissional,
       codagendamento,
     });
+    if (agendamentoAtualizado instanceof Error) {
+      throw new Error(agendamentoAtualizado.message);
+    }
     response.json(agendamentoAtualizado);
   } catch (error) {
-    response.json({ message: error.message });
+    response.status(400).json({ message: error.message });
   }
 });
 
@@ -48,6 +54,9 @@ agendamentoRouter.delete('/:codagendamento', async (request, response) => {
     const agendamentoDeletadoMessage = await agendamentoController.deletar(
       Number(codagendamento),
     );
+    if (agendamentoDeletadoMessage instanceof Error) {
+      throw new Error(agendamentoDeletadoMessage.message);
+    }
     response.status(201).json(agendamentoDeletadoMessage);
   } catch (error) {
     response.status(404).json({ message: error.message });
@@ -67,6 +76,9 @@ agendamentoRouter.get('/:busca', async (request, response) => {
       Number(id),
       usuario,
     );
+    if (listaAgendamentos instanceof Error) {
+      throw new Error(listaAgendamentos.message);
+    }
     response.status(200).json(listaAgendamentos);
   } catch (error) {
     response.status(404).json({ message: error.message });
