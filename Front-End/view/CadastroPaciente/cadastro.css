@@ -10,6 +10,14 @@
     margin-bottom: 30px;
 }
 
+.errorTxt {
+    color: #8d230f;
+}
+
+.successTxt {
+    color: #0f8d23;
+}
+
 
 
 
