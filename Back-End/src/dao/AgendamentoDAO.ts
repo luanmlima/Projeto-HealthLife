@@ -1,6 +1,5 @@
 import { Pool } from 'pg';
 import { getHours } from 'date-fns';
-import { zonedTimeToUtc } from 'date-fns-tz';
 
 import Agendamento from '../models/Agendamento';
 import FabricadeConexao from '../utils/FabricadeConexao';
@@ -169,11 +168,11 @@ class AgendamentoDAO {
       const conexao = new FabricadeConexao();
       conexao.conexao();
       const pool = new Pool();
-
+      agendamento.formatarData()
       const querySelectAgendamentos = {
         name: 'Selecionar todos as datas dos agendamentos do usuario',
         text: `SELECT dataagendada FROM agendamento WHERE codprofissional = $1 AND date(dataagendada) = date($2)`,
-        values: [agendamento.getProfissional()?.getId(), agendamento.getData()],
+        values: [agendamento.getProfissional()?.getId(), agendamento.getDataFormatada()],
       };
 
       const datasAgendamentos = await pool.query(querySelectAgendamentos);

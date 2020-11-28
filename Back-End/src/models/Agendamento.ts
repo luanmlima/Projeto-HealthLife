@@ -6,6 +6,8 @@ class Agendamento {
 
   private data: Date | null;
 
+  private dataFormatada: string | null;
+
   private paciente: Paciente | null;
 
   private profissional: Profissional | null;
@@ -13,6 +15,7 @@ class Agendamento {
   constructor() {
     this.id = null;
     this.data = null;
+    this.dataFormatada = null;
     this.paciente = null;
     this.profissional = null;
   }
@@ -33,6 +36,14 @@ class Agendamento {
     return this.data;
   }
 
+  public setDataFormatada(dataFormatada: string) {
+    this.dataFormatada = dataFormatada;
+  }
+
+  public getDataFormatada(): string | null {
+    return this.dataFormatada;
+  }
+
   public setPaciente(paciente: Paciente) {
     this.paciente = paciente;
   }
@@ -47,6 +58,14 @@ class Agendamento {
 
   public getProfissional(): Profissional | null {
     return this.profissional;
+  }
+  public formatarData():void{
+    var tempDate = this.getData()
+    var visitDate = ""
+    if(tempDate !== null){
+      visitDate = (tempDate.getUTCFullYear() + "-" + (tempDate.getUTCMonth() + 1) + "-" + tempDate.getUTCDate());
+    }
+    this.dataFormatada = visitDate
   }
 }
 
