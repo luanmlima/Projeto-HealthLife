@@ -80,3 +80,28 @@ function sucess(){
   endMessage.classList.add("successTxt");
   endMessage.innerHTML = "Usuario atualizado com sucesso"
 }
+
+function desativar(){
+  id = paciente.codpaciente;
+  const options = {
+    method: "DELETE"
+  };
+  fetch(`http://localhost:5000/paciente/${id}`, options)
+    .then((resp) => {
+      status = resp.status;
+      return resp.json();
+    })
+    .then((resp) => {
+      if (status != 201) {
+        registerErrorOrSuccess(resp.message);
+      } else {
+        sucess(resp.message)
+        setTimeout(() => {
+          sair()
+        }, 3000);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
