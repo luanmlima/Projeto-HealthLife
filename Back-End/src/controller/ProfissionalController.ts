@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-shadow */
 import Profissional from '../models/Profissional';
 import Usuario from '../models/Usuario';
@@ -24,7 +25,7 @@ interface ProfissionalDTO {
   sala: number;
 }
 
-interface PacienteSemUsuarioDTO {
+interface ProfissionalSemUsuarioDTO {
   id: number;
   anosExperiencia: number;
   nome: string;
@@ -40,13 +41,13 @@ interface PacienteSemUsuarioDTO {
 interface ProfissionalDBDTO {
   codprofissional: number;
   especialidade: string;
-  anosExperiencia: number;
+  experiencia: number;
   nome: string;
   codendereco: number;
   usuario: number;
   cpf: string;
-  numeroDiploma: number;
-  numeroCarteira: number;
+  numero_diploma: number;
+  numero_carteira: number;
 }
 
 interface EnderecoDBDTO {
@@ -68,6 +69,7 @@ interface ProfissionalEnderecoDTO {
   numeroDiploma: number;
   numeroCarteira: number;
 }
+
 interface MessageRetorno {
   message: string;
 }
@@ -87,7 +89,7 @@ class ProfissionalController {
     bairro,
     numero,
     sala,
-  }: ProfissionalDTO): Promise<Profissional | ProfissionalDBDTO | Error> {
+  }: ProfissionalDTO): Promise<Profissional | ProfissionalEnderecoDTO | Error> {
     try {
       const profissional = new Profissional();
       const usuario = new Usuario();
@@ -176,7 +178,7 @@ class ProfissionalController {
     bairro,
     numero,
     sala,
-  }: PacienteSemUsuarioDTO): Promise<ProfissionalDBDTO | Error> {
+  }: ProfissionalSemUsuarioDTO): Promise<ProfissionalEnderecoDTO | Error> {
     try {
       const profissional = new Profissional();
       const profissionalDao = new ProfissionalDAO();
@@ -193,7 +195,7 @@ class ProfissionalController {
         profissional,
       );
       if (profissionalAtualizado instanceof Error) {
-        throw new Error('Erro ao atualizar atualizado');
+        throw new Error('Erro ao atualizar profissional');
       }
       const profissionalDB: ProfissionalDBDTO = profissionalAtualizado;
 
@@ -206,7 +208,22 @@ class ProfissionalController {
 
       await enderecoDao.atualizar(endereco);
 
-      return profissionalAtualizado;
+      const enderecoProfissionaLogado: EnderecoDBDTO = await enderecoDao.listar(
+        endereco,
+      );
+
+      const profissionalEndereco: ProfissionalEnderecoDTO = {
+        codprofissional: profissionalAtualizado.codprofissional,
+        nome: profissionalAtualizado.nome,
+        cpf: profissionalAtualizado.cpf,
+        especialidade: profissionalAtualizado.especialidade,
+        anosExperiencia: profissionalAtualizado.experiencia,
+        numeroCarteira: profissionalAtualizado.numero_carteira,
+        numeroDiploma: profissionalAtualizado.numero_diploma,
+        endereco: enderecoProfissionaLogado,
+      };
+
+      return profissionalEndereco;
     } catch (err) {
       return err;
     }
@@ -224,7 +241,7 @@ class ProfissionalController {
         id,
         'profissional',
       );
-      console.log(existeAgendamentosFuturos);
+
       if (existeAgendamentosFuturos) {
         throw new Error(
           'Existe agendamentos futuros ou com a data de hoje na sua conta, por favor faça o cancelamentos deles antes de desativar sua conta, se esse agendamento for de hoje mas de horas passadas, por favor efetue o cancelamento da sua conta amanhã',
@@ -248,12 +265,17 @@ class ProfissionalController {
     }
   }
 
-  public async logar(login: string, senha: string): Promise<ProfissionalDBDTO> {
+  public async logar(
+    login: string,
+    senha: string,
+  ): Promise<ProfissionalEnderecoDTO> {
     try {
       const profissional = new Profissional();
       const usuario = new Usuario();
       const profissionalDao = new ProfissionalDAO();
       const usuarioDao = new UsuarioDAO();
+      const endereco = new Endereco();
+      const enderecoDao = new EnderecoDAO();
 
       usuario.setLogin(login);
       usuario.setSenha(senha);
@@ -273,7 +295,24 @@ class ProfissionalController {
         throw new Error('Usuario não cadastrado como profissional');
       }
 
-      return profissionalLogado;
+      endereco.setId(profissionalLogado.codendereco);
+
+      const enderecoProfissionaLogado: EnderecoDBDTO = await enderecoDao.listar(
+        endereco,
+      );
+
+      const profissionalEndereco: ProfissionalEnderecoDTO = {
+        codprofissional: profissionalLogado.codprofissional,
+        nome: profissionalLogado.nome,
+        cpf: profissionalLogado.cpf,
+        especialidade: profissionalLogado.especialidade,
+        anosExperiencia: profissionalLogado.experiencia,
+        numeroCarteira: profissionalLogado.numero_carteira,
+        numeroDiploma: profissionalLogado.numero_diploma,
+        endereco: enderecoProfissionaLogado,
+      };
+
+      return profissionalEndereco;
     } catch (err) {
       return err;
     }
@@ -306,9 +345,9 @@ class ProfissionalController {
         nome: profissionalListado.nome,
         cpf: profissionalListado.cpf,
         especialidade: profissionalListado.especialidade,
-        anosExperiencia: profissionalListado.anosExperiencia,
-        numeroCarteira: profissionalListado.numeroCarteira,
-        numeroDiploma: profissionalListado.numeroDiploma,
+        anosExperiencia: profissionalListado.experiencia,
+        numeroCarteira: profissionalListado.numero_carteira,
+        numeroDiploma: profissionalListado.numero_diploma,
         endereco: enderecoProfissionalListado,
       };
 

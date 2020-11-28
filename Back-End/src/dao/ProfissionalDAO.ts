@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Pool } from 'pg';
 import Profissional from '../models/Profissional';
 import FabricadeConexao from '../utils/FabricadeConexao';
@@ -5,13 +6,13 @@ import FabricadeConexao from '../utils/FabricadeConexao';
 interface ProfissionalDBDTO {
   codprofissional: number;
   especialidade: string;
-  anosExperiencia: number;
+  experiencia: number;
   nome: string;
   codendereco: number;
   usuario: number;
   cpf: string;
-  numeroDiploma: number;
-  numeroCarteira: number;
+  numero_diploma: number;
+  numero_carteira: number;
   status: number;
 }
 

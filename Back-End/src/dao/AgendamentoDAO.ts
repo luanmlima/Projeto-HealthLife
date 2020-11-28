@@ -1,5 +1,7 @@
 import { Pool } from 'pg';
 import { getHours } from 'date-fns';
+import { zonedTimeToUtc } from 'date-fns-tz';
+
 import Agendamento from '../models/Agendamento';
 import FabricadeConexao from '../utils/FabricadeConexao';
 
@@ -126,7 +128,7 @@ class AgendamentoDAO {
         inner join paciente on paciente.codpaciente = agendamento.codpaciente
         inner join profissional on profissional.codprofissional = agendamento.codprofissional
         inner join endereco on endereco.codendereco = profissional.codendereco
-        where agendamento.cod${usuario} = $1`,
+        where agendamento.cod${usuario} = $1 ORDER BY codagendamento`,
         values: [id],
       };
 
