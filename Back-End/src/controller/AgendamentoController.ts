@@ -30,6 +30,7 @@ interface AgendamentoCompletoDTO {
   idadePaciente: number;
   nomeProfissional: string;
   especialidadeProfissional: string;
+  data: Date;
   endereco: EnderecoAgendamento;
 }
 

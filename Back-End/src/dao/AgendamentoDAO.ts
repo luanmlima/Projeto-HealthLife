@@ -17,6 +17,7 @@ interface AgendamentoCompletoDTO {
   idadePaciente: number;
   nomeProfissional: string;
   especialidadeProfissional: string;
+  data: Date;
   endereco: EnderecoAgendamento;
 }
 
@@ -140,6 +141,7 @@ class AgendamentoDAO {
           idadePaciente: agendament.idadepaciente,
           nomeProfissional: agendament.nomeprofissional,
           especialidadeProfissional: agendament.especialidadeprofissional,
+          data: agendament.dataagendada,
           endereco: {
             rua: agendament.rua,
             cidade: agendament.cidade,
