@@ -1,0 +1,31 @@
+.title{ 
+  margin-bottom: 25px; 
+}
+.card{
+  margin-bottom: 20px;
+}
+.codAgendamento{ 
+  position: absolute; 
+  right: 15px; 
+  font-size: 20px; 
+  font-weight: bold; 
+}
+.ulAgendamento{ 
+  list-style: none;
+  padding-left: 0px;
+  margin-bottom: 0px;
+}
+.ulAgendamento li{
+  margin-bottom: 5px;
+}
+.ulAgendamento li:last-child{
+  margin-bottom: 0px;
+}
+
+.errorTxt {
+  color: #8d230f;
+}
+
+.successTxt {
+  color: #0f8d23;
+}

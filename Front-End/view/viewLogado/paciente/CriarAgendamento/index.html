@@ -6,12 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="agendamento.css">
 
-  <title>Home | HealthLife</title>
+  <title>Criar agendamento | HealthLife</title>
 </head>
 
 <body>
+
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
       aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +20,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
-        <li><a href="../EditarPerfil/index.html" class="btn btn-light">Editar perfil</a></li>
+        <li><a href="../Home/index.html" class="btn btn-light">Ver meus Agendamentos</a></li>
       </ul>
       <button type="button" class="btn btn-light" onclick="sair()">Sair</button>
     </div>
@@ -29,16 +30,29 @@
 
     <div class="row">
       <div class="col-md-12">
-        <h2 class="title d-flex justify-content-center mt-5 mb-5">Meus Agendamentos</h2>
+        <h2 class="title d-flex justify-content-center mt-5 mb-5">Criar agendamento</h2>
+      </div>
 
-        <div id="agendamentos"></div>
+      <div class="col-md-6 offset-md-3">
+        <form name="formularioAgendamento" id="formularioAgendamento">
+          <label>Selecione um dia</label>
+          <input type="date" class="form-control form-group" required id="data"
+            onchange="buscarHorasDisponiveis()"></input>
 
+          <label>Selecione um profissional</label>
+          <select class="form-control form-group" required id="profissional"
+            onchange="buscarHorasDisponiveis()"></select>
+
+          <div id="horasDisponiveis"></div>
+
+          <button type="submit" class="btn btn-info" id="buttonSalvar" onclick="salvarAgendamento(event)"
+            disabled>Salvar</button>
+        </form>
         <div class="messageReturn" id="messageReturn">
           <center>
             <p class="errorTxt" id="endMessage"></p>
           </center>
         </div>
-
       </div>
     </div>
 
