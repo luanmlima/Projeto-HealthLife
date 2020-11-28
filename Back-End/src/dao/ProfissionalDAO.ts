@@ -57,6 +57,31 @@ class ProfissionalDAO {
       const conexao = new FabricadeConexao();
       conexao.conexao();
       const pool = new Pool();
+      if(profissional.getEspecialidade()){
+        const queryUpdateComEspecialidade = {
+          name: 'Atualizar Profissional',
+          text:
+            'UPDATE profissional SET experiencia = $1, nome = $2, numero_diploma = $3, numero_carteira = $4, status = 1, especialidade = $5 WHERE codprofissional = $6 RETURNING *',
+          values: [
+            profissional.getAnosExperiencia(),
+            profissional.getNome(),
+            profissional.getNumeroDiploma(),
+            profissional.getNumeroCarteira(),
+            profissional.getEspecialidade(),
+            profissional.getId(),
+          ],
+        };
+        const profissionalDB = await pool.query(queryUpdateComEspecialidade);
+
+      conexao.close();
+
+      if (!profissionalDB.rows[0]) {
+        throw new Error();
+      }
+      const profissionalAtualizado: ProfissionalDBDTO = profissionalDB.rows[0];
+      return profissionalAtualizado;
+      }
+
 
       const queryUpdate = {
         name: 'Atualizar Profissional',

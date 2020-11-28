@@ -60,9 +60,31 @@ profissionalRoute.put('/atualizar', async (request, response) => {
       bairro,
       numero,
       sala,
+      especialidade
     } = request.body;
 
     const profissionalController = new ProfissionalController();
+
+    if(especialidade){
+      const profissionalAtualizado = await profissionalController.atualizar({
+        id,
+        especialidade,
+        anosExperiencia,
+        nome,
+        numeroDiploma,
+        numeroCarteira,
+        rua,
+        cidade,
+        bairro,
+        numero,
+        sala,
+      });
+      if (profissionalAtualizado instanceof Error) {
+        throw new Error(profissionalAtualizado.message);
+      }
+      response.json(profissionalAtualizado);
+      return;
+    }
 
     const profissionalAtualizado = await profissionalController.atualizar({
       id,

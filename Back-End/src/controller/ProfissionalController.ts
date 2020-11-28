@@ -28,6 +28,7 @@ interface ProfissionalDTO {
 interface ProfissionalSemUsuarioDTO {
   id: number;
   anosExperiencia: number;
+  especialidade?:string;
   nome: string;
   numeroDiploma: number;
   numeroCarteira: number;
@@ -111,6 +112,7 @@ class ProfissionalController {
         const profissionalAtualizado = await this.atualizar({
           id: profissionalExiste,
           anosExperiencia,
+          especialidade,
           nome,
           numeroDiploma,
           numeroCarteira,
@@ -173,6 +175,7 @@ class ProfissionalController {
     nome,
     numeroDiploma,
     numeroCarteira,
+    especialidade,
     rua,
     cidade,
     bairro,
@@ -190,6 +193,9 @@ class ProfissionalController {
       profissional.setAnosExperiencia(anosExperiencia);
       profissional.setNumeroCarteira(numeroCarteira);
       profissional.setNumeroDiploma(numeroDiploma);
+      if(especialidade){
+        profissional.setEspecialidade(especialidade)
+      }
 
       const profissionalAtualizado = await profissionalDao.atualizar(
         profissional,
