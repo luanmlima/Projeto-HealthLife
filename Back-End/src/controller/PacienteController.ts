@@ -29,13 +29,15 @@ interface MessageRetorno {
 }
 
 class PacienteController {
-  public async cadastrar({ nome, cpf, login, senha, idade }: PacienteDTO) {
+  public async cadastrar({ nome, cpf, login, senha, idade }: PacienteDTO){
     try {
       const paciente = new Paciente();
       const usuario = new Usuario();
       const pacienteDao = new PacienteDAO();
       const usuarioDao = new UsuarioDAO();
+
       const buscaCPF = new BuscaPorCPFDAO();
+
       if (cpf.length !== 11) {
         throw new Error('CPF Invalido');
       }
@@ -91,7 +93,9 @@ class PacienteController {
     try {
       const paciente = new Paciente();
       const pacienteDao = new PacienteDAO();
-
+      if (idade < 18) {
+        throw new Error('Permitido só para maiores de 18 anos');
+      }
       paciente.setId(id);
       paciente.setNome(nome);
       paciente.setIdade(idade);

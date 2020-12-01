@@ -1,0 +1,53 @@
+CREATE TABLE Usuario (
+codUsuario SERIAL PRIMARY KEY,
+login VARCHAR(50),
+senha TEXT,
+tipo VARCHAR(20),
+status INTEGER DEFAULT 1
+);
+
+CREATE TABLE Endereco(
+codEndereco SERIAL PRIMARY KEY,
+rua VARCHAR(50),
+cidade VARCHAR(50),
+bairro VARCHAR(50),
+numero INTEGER,
+sala INTEGER
+);
+
+CREATE TABLE Profissional (
+codProfissional SERIAL PRIMARY KEY,
+especialidade VARCHAR(50),
+experiencia INTEGER,
+nome VARCHAR(100),
+codEndereco INTEGER,
+usuario INTEGER,
+cpf VARCHAR(11),
+numero_diploma NUMERIC,
+numero_carteira NUMERIC,
+status INTEGER DEFAULT 1,
+constraint fk_usuario FOREIGN KEY(usuario) REFERENCES Usuario(codUsuario),
+constraint fk_endereco FOREIGN KEY(codEndereco) REFERENCES Endereco(codEndereco)
+);
+
+CREATE TABLE Paciente (
+codPaciente SERIAL PRIMARY KEY,
+nome VARCHAR(100),
+cpf VARCHAR(11),
+idade INTEGER,
+usuario SERIAL,
+status INTEGER DEFAULT 1,
+constraint fk_usuario FOREIGN KEY(usuario) REFERENCES Usuario(codUsuario)
+);
+
+CREATE TABLE Agendamento (
+codAgendamento SERIAL PRIMARY KEY,
+dataAgendada TIMESTEMP TIME ZONE,
+codPaciente SERIAL,
+codProfissional SERIAL,
+status INTEGER DEFAULT 1,
+constraint fk_paciente FOREIGN KEY(codPaciente) REFERENCES Paciente(codPaciente),
+constraint fk_profissional FOREIGN KEY(codProfissional) REFERENCES Profissional(codProfissional)
+);
+
+SET TIMEZONE TO 'America/Sao_Paulo'

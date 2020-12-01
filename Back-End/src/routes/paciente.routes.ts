@@ -6,7 +6,6 @@ const pacienteRouter = express.Router();
 pacienteRouter.post('/criar', async (request, response) => {
   try {
     const { login, senha, nome, cpf, idade } = request.body;
-
     const pacienteController = new PacienteController();
 
     const pacienteCriado = await pacienteController.cadastrar({
